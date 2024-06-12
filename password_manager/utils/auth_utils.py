@@ -1,4 +1,7 @@
-# /utils/auth.py
+# /utils/auth_utils.py
+# Author: Indrajit Ghosh
+# Created On: Jun 12, 2024
+#
 
 import pwinput
 
