@@ -29,11 +29,8 @@ def update(mnemonic, uuid, name, mnemonics, username, url):
     The password field cannot be updated using this command; use 'password-manager update-password'
     to update the password of a credential.
 
-    Args:
-        mnemonic (str, optional): Mnemonic identifier of the credential to update.
-        uuid (str, optional): UUID associated with the credential to update.
-
     Options:
+        -mnemonic (str, optional): Mnemonic identifier of the credential to update.
         --uuid TEXT: UUID associated with the credential to update.
         -n, --name TEXT: Updated name for the credential.
         -mn, --mnemonics TEXT: Updated mnemonics for the credential (can be specified multiple times).

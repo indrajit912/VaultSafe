@@ -31,7 +31,7 @@ def init():
         - It prompts for the master password and optional vault attributes like name, owner name, and owner email.
         - If the database already exists, it prompts to confirm deleting all existing data before reinitializing.
 
-    Examples:
+    Example:
         To initialize the password vault:
         \b
         $ password-manager init

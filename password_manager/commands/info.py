@@ -16,17 +16,7 @@ def info():
     """
     Display information about the password vault.
 
-    This command retrieves and displays the following information:
-    - Details about the currently initialized vault, including its name, owner, and creation timestamp.
-    - Total number of credentials stored in the vault.
-    - Total number of mnemonics associated with credentials in the vault.
-
-    Notes:
-        - The command requires the password vault to be initialized (`init` command) before use.
-        - It prints the vault information, total number of credentials, and total number of mnemonics.
-        - If no vault is found, it prompts the user to initialize the app using the `init` command first.
-
-    Examples:
+    Example:
         To display information about the password vault:
         \b
         $ password-manager info

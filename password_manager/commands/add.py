@@ -23,25 +23,21 @@ def add(name, mnemonics, username, password, url):
     """
     Add a new credential to the database.
 
-    Args:
-        name (str): Name for the credential (required).
-        mnemonics (list): Mnemonics associated with the credential (required, multiple values).
-        username (str, optional): Username for the credential.
-        password (str, optional): Password for the credential.
-        url (str, optional): URL associated with the credential.
-
-    Notes:
-        - This command requires the database to be initialized ('init' command).
-        - Mnemonics provided must be unique and not already associated with other credentials.
+    Options:
+        -n, --name TEXT : Name for the credential (required).
+        -mn, --mnemonics TEXT : Mnemonics associated with the credential (required, multiple values).
+        -u, --username TEXT (optional): Username for the credential.
+        -p, --password TEXT (optional): Password for the credential.
+        -url, --url TEXT (optional): URL associated with the credential.TEXT 
 
     Examples:
         To add a credential with a name and mnemonics:
         \b
-        $ password-manager add -n MyCredential -mn mnemonic1 mnemonic2
+        $ password-manager add -n "My Credential Name" -mn mnemonic1 -mn mnemonic2
 
         To add a credential with all details (name, mnemonics, username, password, and URL):
         \b
-        $ password-manager add -n MyCredential -mn mnemonic1 mnemonic2 -u username -p password -url https://example.com
+        $ password-manager add -n "My Facebook Account" -mn fb -mn facebook -u username -p password -url https://example.com
 
     """
     print_basic_info()

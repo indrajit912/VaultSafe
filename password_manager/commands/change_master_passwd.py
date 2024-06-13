@@ -22,11 +22,6 @@ def change_master_password():
     This command allows the user to change the master password used to encrypt and decrypt
     credentials stored in the password vault.
 
-    Notes:
-        - This command requires the database to be initialized (`init` command).
-        - User input for passwords is masked for security.
-        - If the entered new passwords do not match, the operation is aborted.
-
     Example:
         To change the master password:
         

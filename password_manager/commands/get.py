@@ -24,9 +24,6 @@ def get(mnemonic):
     Args:
         mnemonic (str, optional): The mnemonic associated with the credential to retrieve.
 
-    Notes:
-        - This command requires the database to be initialized ('init' command).
-
     Examples:
         To retrieve a credential by mnemonic:
         \b

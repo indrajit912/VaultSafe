@@ -21,14 +21,13 @@ def open(mnemonic):
     Retrieve and display a credential from the database. If the credential's URL entry 
     is not None, open the URL in a web browser.
 
+    Arg:
+        -mnemonic TEXT : mnemonic of the credential to be opened.
+
     Examples:
         To retrieve a credential by mnemonic:
         \b
         $ password-manager open my_mnemonic
-
-        To retrieve all credentials:
-        \b
-        $ password-manager open
     """
 
     print_basic_info()

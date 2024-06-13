@@ -23,12 +23,6 @@ def delete(mnemonic):
         mnemonic (str, optional): The mnemonic associated with the credential to delete.
 
     If 'mnemonic' is not provided as an argument, the user will be prompted to enter it interactively.
-
-    This command requires the database to be initialized. It will:
-    - Prompt for the master password to derive the vault key.
-    - Query the database for the credential associated with the provided mnemonic.
-    - Display the details of the credential before deletion.
-    - Ask for confirmation before proceeding with deletion.
     """
     print_basic_info()
     assert_db_init()
