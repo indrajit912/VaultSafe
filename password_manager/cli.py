@@ -3,8 +3,11 @@
 # Created On: Jun 12, 2024
 # 
 # Run in dev mode: `python -m password_manager.cli [command] [arguments]`
-# Installation: 
-#      [1] `git clone https://github.com/indrajit912/PasswordManager.git`
+# Installation (locally):
+#   `pip install .` 
+# 
+# Installation via GitHub:
+#   `pip install git+https://github.com/indrajit912/PasswordManager.git`
 # 
 import click
 from rich.console import Console

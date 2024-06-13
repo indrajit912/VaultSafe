@@ -8,11 +8,9 @@ from rich.table import Table
 from rich.panel import Panel
 from datetime import date
 
-from password_manager.config import app_name, copyright_statement
+from password_manager.config import APP_NAME, COPYRIGHT_STATEMENT, DATABASE_PATH
 
 console = Console()
-
-from config import DATABASE_PATH
 
 def clear_terminal_screen():
     """Clears the terminal screen."""
@@ -44,11 +42,11 @@ def print_basic_info():
     clear_terminal_screen()
 
     # Create title with centered alignment
-    title = Panel(f"{app_name}", title="Password Manager", title_align="center", style="bold white on blue", border_style="bright_blue")
+    title = Panel(f"{APP_NAME}", title="Password Manager", title_align="center", style="bold white on blue", border_style="bright_blue")
 
     # Create information table with centered alignment
     info_table = Table(show_header=False)
-    info_table.add_row("[center]Copyright[/center]", f"[center]{copyright_statement}[/center]")
+    info_table.add_row("[center]Copyright[/center]", f"[center]{COPYRIGHT_STATEMENT}[/center]")
     info_table.add_row("[center]Today's Date[/center]", f"[center]{date.today().strftime('%B %d, %Y')}[/center]")
 
     # Print title and information table

@@ -11,6 +11,6 @@ DATABASE_PATH = DOT_PASSWD_MANGR_DIR / 'password_manager.db'
 DATABASE_URL = f'sqlite:///{DATABASE_PATH}'
 
 # Basic information
-app_name = "Indrajit's Password Manager"
-current_year = date.today().year
-copyright_statement = f"© {current_year} Indrajit Ghosh. All rights reserved."
+APP_NAME = "Indrajit's Password Manager"
+CURRENT_YEAR = date.today().year
+COPYRIGHT_STATEMENT = f"© {CURRENT_YEAR} Indrajit Ghosh. All rights reserved."
