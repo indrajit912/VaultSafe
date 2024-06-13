@@ -137,6 +137,19 @@ password-manager update --uuid <UUID> -p new_password -u new_username
 ```
 
 ---
+### open
+
+Open a credential onto the browser from the database. If the password is saved for then the password will be copied to the clipboard.
+
+**Args:**
+- `mnemonic` (str, optional): The mnemonic associated with the credential to delete.
+
+**Example:**
+To open the credential with mnemonic `facebook` use:
+```bash
+password-manager open facebook
+```
+---
 
 ### delete
 
