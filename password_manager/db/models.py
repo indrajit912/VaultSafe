@@ -16,7 +16,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from password_manager.utils.crypto_utils import sha256_hash, generate_fernet_key, encrypt, decrypt
+from password_manager.utils.crypto_utils import sha256_hash, decrypt
 from config import DATABASE_URL
 
 Base = declarative_base()
@@ -91,6 +91,28 @@ class Vault(Base):
             "owner_name": self.owner_name,
             "owner_email": self.owner_email
         }
+    
+    def print_on_screen(self):
+        """
+        Prints the Vault information on the terminal screen in a professional CLI app style using rich library.
+        """
+        console = Console()
+
+        table = Table(title="Vault Information", title_style="bold cyan", style="bright_blue")
+        table.add_column("Field", style="bold")
+        table.add_column("Value", justify="left")
+
+        table.add_row("ID", str(self.id))
+        table.add_row("UUID", self.uuid)
+        table.add_row("Name", self.name)
+        table.add_row("Owner", self.owner_name)
+        table.add_row("Owner Email", self.owner_email if self.owner_email else '-')
+        table.add_row("Date Created", self.date_created.strftime('%Y-%m-%d %H:%M:%S'))
+        table.add_row("Last Updated", self.last_updated.strftime('%Y-%m-%d %H:%M:%S'))
+        table.add_row("Vault Key Hash", self.vault_key_hash)
+        table.add_row("Master Password Hash", self.master_password_hash)
+
+        console.print(Panel(table, title="Vault Details", title_align="left", border_style="bright_blue"))
 
 
 class Mnemonic(Base):
@@ -173,6 +195,7 @@ class Credential(Base):
             'url': url_decrypted,
             'username': username_decrypted,
             'password': passwd_decrypted,
+            'mnemonics': [mn.name for mn in self.mnemonics],
             'key': self.encrypted_key
         }
     
@@ -196,6 +219,7 @@ class Credential(Base):
         username = credential_data.get('username')
         password = credential_data.get('password')
         password_display = '\\[encrypted]' if password != Credential.NONE_STR else password
+        mnemonics:list = credential_data.get('mnemonics')
 
         table = Table(show_header=True, header_style="bold cyan", border_style="bright_blue")
         table.add_column("Field", style="bold", justify="right")
@@ -206,6 +230,10 @@ class Credential(Base):
         table.add_row("URL", f"[blue]{url}[/blue]")
         table.add_row("Username", f"[blue]{username}[/blue]")
         table.add_row("Password", f"[red]{password_display}[/red]")
+
+        if mnemonics:
+            mnemonics_str = ", ".join(f"[cyan]{mnemonic}[/cyan]" for mnemonic in mnemonics)
+            table.add_row("Mnemonics", mnemonics_str)
 
         panel = Panel(table, title=count + name, title_align="left", border_style="bold magenta")
 
