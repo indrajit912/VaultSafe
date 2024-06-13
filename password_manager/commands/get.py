@@ -8,7 +8,7 @@ from rich.console import Console
 from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key
-from password_manager.utils.cli_utils import assert_db_init
+from password_manager.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -37,6 +37,7 @@ def get(mnemonic):
         $ password-manager get
 
     """
+    print_basic_info()
     assert_db_init()
     
     console.rule("Retrieve Credential")

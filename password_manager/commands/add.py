@@ -9,7 +9,7 @@ from rich.panel import Panel
 from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import get_password, input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key, encrypt, generate_fernet_key
-from password_manager.utils.cli_utils import assert_db_init
+from password_manager.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -44,6 +44,7 @@ def add(name, mnemonics, username, password, url):
         $ password-manager add -n MyCredential -mn mnemonic1 mnemonic2 -u username -p password -url https://example.com
 
     """
+    print_basic_info()
     assert_db_init()
 
     console.rule("Add Credential")

@@ -7,7 +7,7 @@ from rich.console import Console
 from rich.panel import Panel
 
 from password_manager.db.models import session, Vault, Credential, Mnemonic
-from password_manager.utils.cli_utils import assert_db_init
+from password_manager.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -32,9 +32,11 @@ def info():
         $ password-manager info
 
     """
+    print_basic_info()
+
     # Check db_init
     assert_db_init()
-
+    
     # Get the vault
     vault = session.query(Vault).first()
     vault.print_on_screen()

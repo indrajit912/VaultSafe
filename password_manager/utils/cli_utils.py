@@ -4,7 +4,11 @@ import os
 import sys
 import pwinput
 from rich.console import Console
+from rich.table import Table
 from rich.panel import Panel
+from datetime import date
+
+from config import app_name, copyright_statement
 
 console = Console()
 
@@ -32,3 +36,22 @@ def assert_db_init():
         console.print(Panel("[red]No vault found![/red] The app is probably not initialized yet.", title="Error", style="bold red"))
         console.print("Please use the [bold]`init`[/bold] command to initialize the app.", style="yellow")
         sys.exit(1)
+
+
+# Function to print basic information
+def print_basic_info():
+
+    clear_terminal_screen()
+
+    # Create title with centered alignment
+    title = Panel(f"{app_name}", title="Password Manager", title_align="center", style="bold white on blue", border_style="bright_blue")
+
+    # Create information table with centered alignment
+    info_table = Table(show_header=False)
+    info_table.add_row("[center]Copyright[/center]", f"[center]{copyright_statement}[/center]")
+    info_table.add_row("[center]Today's Date[/center]", f"[center]{date.today().strftime('%B %d, %Y')}[/center]")
+
+    # Print title and information table
+    console.print(title)
+    console.print(info_table)
+    console.print("\n")
