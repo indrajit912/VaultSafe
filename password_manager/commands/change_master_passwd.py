@@ -15,7 +15,7 @@ from password_manager.utils.cli_utils import assert_db_init, print_basic_info
 console = Console()
 
 @click.command()
-def change_password():
+def change_master_password():
     """
     Command to change the master password for the password vault.
 
@@ -30,7 +30,7 @@ def change_password():
     Example:
         To change the master password:
         
-        $ password-manager change-password
+        $ password-manager change-master-password
     """
     print_basic_info()
     assert_db_init()

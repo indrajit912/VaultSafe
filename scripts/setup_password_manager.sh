@@ -44,5 +44,9 @@ if ! grep -q 'export PATH=\$PATH:~/bin' "$HOME/.zshrc"; then
     echo 'export PATH=$PATH:~/bin' >> "$HOME/.zshrc"
 fi
 
+# Step 6: Install xclip
+echo "Installing xclip..."
+sudo apt-get install xclip
+
 print_message "Setup complete! You can now use the 'password-manager' command."
 print_message "Please restart your terminal or run 'source ~/.bashrc' or 'source ~/.zshrc' to apply changes."

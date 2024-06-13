@@ -19,37 +19,36 @@ console = Console()
 @click.option('-n', '--name', help='Updated name for the credential')
 @click.option('-mn', '--mnemonics', multiple=True, help='Updated mnemonics for the credential')
 @click.option('-u', '--username', help='Updated username for the credential')
-@click.option('-p', '--password', help='Updated password for the credential')
 @click.option('-url', '--url', help='Updated URL for the credential')
-def update(mnemonic, uuid, name, mnemonics, username, password, url):
+def update(mnemonic, uuid, name, mnemonics, username, url):
     """
     Update an existing credential in the database.
 
-    This command allows updating various fields of a credential identified by either 'mnemonic' or 'uuid'.
-    At least one of these identifiers must be provided.
+    This command updates various attributes of a credential in the password vault database.
+    It can update the name, mnemonics, username, and URL associated with the credential.
+    The password field cannot be updated using this command; use 'password-manager update-password'
+    to update the password of a credential.
 
     Args:
-        mnemonic (str, optional): The mnemonic associated with the credential to update.
-        uuid (str, optional): The UUID associated with the credential to update.
-        name (str, optional): Updated name for the credential.
-        mnemonics (list, optional): Updated mnemonics associated with the credential.
-        username (str, optional): Updated username for the credential.
-        password (str, optional): Updated password for the credential.
-        url (str, optional): Updated URL for the credential.
+        mnemonic (str, optional): Mnemonic identifier of the credential to update.
+        uuid (str, optional): UUID associated with the credential to update.
 
-    Notes:
-        - If 'mnemonics' are provided, existing mnemonics associated with the credential will be replaced.
-        - The command requires the database to be initialized ('init' command).
+    Options:
+        --uuid TEXT: UUID associated with the credential to update.
+        -n, --name TEXT: Updated name for the credential.
+        -mn, --mnemonics TEXT: Updated mnemonics for the credential (can be specified multiple times).
+        -u, --username TEXT: Updated username for the credential.
+        -url, --url TEXT: Updated URL for the credential.
 
     Examples:
-        To update a credential by mnemonic:
-        \b
-        $ password-manager update my_mnemonic -n "New Name" -u new_username
+        Update the name and username of a credential:
+        $ password-manager update --uuid "123456" -n "New Credential Name" -u "new_username"
 
-        To update a credential by UUID:
-        \b
-        $ password-manager update --uuid <UUID> -p new_password
+        Update mnemonics and URL for a credential whose mnemonic is 'facebook':
+        $ password-manager update facebook -mn "new_mnemonic1" -mn "new_mnemonic2" -url "https://newurl.com"
 
+        Update only the name of a credential identified by mnemonic 'twitter':
+        $ password-manager update twitter -n "Updated Name"
     """
     print_basic_info()
     assert_db_init()
@@ -83,8 +82,6 @@ def update(mnemonic, uuid, name, mnemonics, username, password, url):
         credential.name = name
     if username:
         credential.username = encrypt(username, credential_key)
-    if password:
-        credential.password = encrypt(password, credential_key)
     if url:
         credential.url = encrypt(url, credential_key)
     

@@ -42,7 +42,7 @@ def open(mnemonic):
     # Derive the vault key
     vault_key = derive_vault_key(master_key=master_passwd)
 
-    # TODO: Take the mnemonic if not given
+    # Take the mnemonic if not given
     mnemonic = Prompt.ask("Enter the mnemonic of the credential: ") if mnemonic is None else mnemonic
 
     mnemonic_entry = session.query(Mnemonic).filter_by(name=mnemonic).first()
