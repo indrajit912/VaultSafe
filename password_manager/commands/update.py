@@ -16,7 +16,7 @@ console = Console()
 @click.argument('mnemonic', required=False)
 @click.option('--uuid', help='UUID associated with the credential to update')
 @click.option('-n', '--name', help='Updated name for the credential')
-@click.option('-mn', '--mnemonics', required=True, multiple=True, help='Mnemonics for the credential')
+@click.option('-mn', '--mnemonics', multiple=True, help='Updated mnemonics for the credential')
 @click.option('-u', '--username', help='Updated username for the credential')
 @click.option('-p', '--password', help='Updated password for the credential')
 @click.option('-url', '--url', help='Updated URL for the credential')
@@ -41,7 +41,7 @@ def update(mnemonic, uuid, name, mnemonics, username, password, url):
         credential = session.query(Credential).filter_by(uuid=uuid).first()
 
     if not credential:
-        console.print(f"[yellow]Credential not found with the provided mnemonic '{mnemonic or uuid}'. Update operation aborted.[/yellow]")
+        console.print(f"[yellow]Credential not found with the provided identifier '{mnemonic or uuid}'. Update operation aborted.[/yellow]")
         return
 
     # Derive vault key
@@ -57,22 +57,36 @@ def update(mnemonic, uuid, name, mnemonics, username, password, url):
         credential.password = encrypt(password, credential_key)
     if url:
         credential.url = encrypt(url, credential_key)
+    
     if mnemonics:
         new_mnemonics = []
-        # Check if any of the provided mnemonics already exist
-        existing_mnemonics = session.query(Mnemonic.name).filter(Mnemonic.name.in_(mnemonics)).all()
+        # Query all mnemonics whose credential_id is not equal to the current credential's id
+        existing_mnemonics = session.query(Mnemonic.name).filter(
+            Mnemonic.name.in_(mnemonics), Mnemonic.credential_id != credential.id
+        ).all()
         existing_mnemonic_names = {mnemonic.name for mnemonic in existing_mnemonics}
 
-        for mnemonic in mnemonics:
+
+        for mnemonic in set(mnemonics):
             if mnemonic in existing_mnemonic_names:
                 console.print(f"[yellow]Note: The mnemonic '{mnemonic}' already exists and cannot be reused for a new credential. Skipped![/yellow]")
             else:
-                # Update the Credential.mnemonics list 
-                pass
-                
+                new_mnemonics.append(mnemonic)
+
+        # Delete existing mnemonics
+        for mn in credential.mnemonics:
+            session.delete(mn)
+        
+        session.commit()
+
+        # Add new mnemonics
+        for mnemonic in set(new_mnemonics):
+            mnemonic_entry = Mnemonic(name=mnemonic, credential=credential)
+            session.add(mnemonic_entry)
 
     session.commit()
 
     console.print(Panel(f"Credential '{credential.name}' updated successfully!", title="Success", style="bold green"))
 
-    credential.print_on_screen(vault_key=vault_key)
+    # Print the credential
+    credential.print_on_screen(vault_key=vault_key, copy_to_clipboard=False)

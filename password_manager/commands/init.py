@@ -6,11 +6,16 @@ import click
 import shutil
 import socket
 import getpass
+from rich.console import Console
+from rich.panel import Panel
+from rich.prompt import Prompt
 
 from password_manager.db.models import Base, engine, session, Vault
 from password_manager.utils.auth_utils import get_password
 from password_manager.utils.crypto_utils import derive_vault_key
 from config import DATABASE_PATH, DOT_PASSWD_MANGR_DIR
+
+console = Console()
 
 @click.command()
 def init():
@@ -18,26 +23,25 @@ def init():
     init_db()
 
 def init_db():
-
     if not DATABASE_PATH.exists():
         # Create database and tables if they don't exist
         DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
         Base.metadata.create_all(engine)
 
-        click.secho("\nPassword Vault Initialization", fg="cyan", bold=True)
-        click.echo()
+        console.rule("[bold cyan]Password Vault Initialization[/bold cyan]")
+        console.print("\n")
 
         # Take the `master_password` from user
-        click.echo("[*] Setting up your password vault...")
+        console.print("[*] Setting up your password vault...")
         master_passwd = get_password(
-            info_msg="[-] Enter a password for the app (e.g. your system password): ",
+            info_msg="Enter a password for the app (e.g. your system password): ",
             success_msg="Master password set successfully. Please remember this password for future use!"
         )
 
         # Prompt user for optional attributes
-        vault_name = click.prompt("[-] Enter a name for the vault", default=socket.gethostname())
-        owner_name = click.prompt("[-] Enter your name", default=getpass.getuser())
-        owner_email = click.prompt("[-] Enter your email (optional)", default='')
+        vault_name = Prompt.ask("[bold yellow][-] Enter a name for the vault", default=socket.gethostname())
+        owner_name = Prompt.ask("[bold yellow][-] Enter your name", default=getpass.getuser())
+        owner_email = Prompt.ask("[bold yellow][-] Enter your email (optional)", default='')
 
         # Create a Vault instance
         vault = Vault(
@@ -58,18 +62,16 @@ def init_db():
         # Add the vault instance to the session and commit it to the database
         session.add(vault)
         session.commit()
-
-        click.echo("\n[-] Password Vault initialized successfully.\n")
+        console.print(Panel("[bold green]Password Vault initialized successfully.[/bold green]", border_style="green"))
 
         # Print the vault information
         vault.print_on_screen()
 
     else:
-        click.secho("Vault already exists.", fg="yellow")
-        res = click.prompt("[-] Do you want to delete all existing data and start afresh? (y/n)")
+        console.print(Panel("[bold yellow]Vault already exists.[/bold yellow]", border_style="yellow"))
+        res = Prompt.ask("[-] Do you want to delete all existing data and start afresh? (y/n)")
         if res.lower() == 'y':
             shutil.rmtree(DOT_PASSWD_MANGR_DIR)
-            click.echo("Existing vault deleted.")
+            console.print(Panel("[bold red]Existing vault deleted.[/bold red]", border_style="red"))
             init_db()  # Recreate the database after deletion
-
 

@@ -78,3 +78,6 @@ def add(name, mnemonics, username, password, url):
     session.commit()
 
     console.print(Panel(f"Credential '{credential.name}' added successfully!", title="Success", style="bold green"))
+
+    # Print the credential
+    credential.print_on_screen(vault_key=vault_key, copy_to_clipboard=False)

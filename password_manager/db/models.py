@@ -98,7 +98,7 @@ class Vault(Base):
         """
         console = Console()
 
-        table = Table(title="Vault Information", title_style="bold cyan", style="bright_blue")
+        table = Table(title="Vault Details", title_style="bold cyan", style="bright_blue")
         table.add_column("Field", style="bold")
         table.add_column("Value", justify="left")
 
@@ -112,7 +112,7 @@ class Vault(Base):
         table.add_row("Vault Key Hash", self.vault_key_hash)
         table.add_row("Master Password Hash", self.master_password_hash)
 
-        console.print(Panel(table, title="Vault Details", title_align="left", border_style="bright_blue"))
+        console.print(Panel(table, title=self.name, title_align="left", border_style="bright_blue"))
 
 
 class Mnemonic(Base):
@@ -199,8 +199,8 @@ class Credential(Base):
             'key': self.encrypted_key
         }
     
-    def print_on_screen(self, vault_key):
-        self._print_on_screen(credential_data=self.json(vault_key))
+    def print_on_screen(self, vault_key, **kwargs):
+        self._print_on_screen(credential_data=self.json(vault_key), **kwargs)
     
     @staticmethod
     def _print_on_screen(credential_data, copy_to_clipboard:bool=True, count:int=None):
@@ -230,8 +230,8 @@ class Credential(Base):
 
         table.add_row("ID", f"[yellow]{id}[/yellow]")
         table.add_row("UUID", f"[green]{uuid}[/green]")
-        table.add_row("URL", f"[blue]{url}[/blue]")
-        table.add_row("Username", f"[blue]{username}[/blue]")
+        table.add_row("URL", f"[bright_blue]{url}[/bright_blue]")
+        table.add_row("Username", f"[bright_green]{username}[/bright_green]")
         table.add_row("Password", f"[red]{password_display}[/red]")
 
         if mnemonics:
