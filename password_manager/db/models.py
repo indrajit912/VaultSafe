@@ -17,7 +17,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from password_manager.utils.crypto_utils import sha256_hash, decrypt
-from config import DATABASE_URL
+from password_manager.config import DATABASE_URL
 
 Base = declarative_base()
 

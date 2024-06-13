@@ -8,7 +8,7 @@ from rich.table import Table
 from rich.panel import Panel
 from datetime import date
 
-from config import app_name, copyright_statement
+from password_manager.config import app_name, copyright_statement
 
 console = Console()
 

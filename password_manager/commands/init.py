@@ -14,7 +14,7 @@ from password_manager.db.models import Base, engine, session, Vault
 from password_manager.utils.auth_utils import get_password
 from password_manager.utils.crypto_utils import derive_vault_key
 from password_manager.utils.cli_utils import print_basic_info
-from config import DATABASE_PATH, DOT_PASSWD_MANGR_DIR
+from password_manager.config import DATABASE_PATH, DOT_PASSWD_MANGR_DIR
 
 console = Console()
 
