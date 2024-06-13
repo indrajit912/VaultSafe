@@ -42,7 +42,7 @@ class Vault(Base):
     owner_name = Column(String, default=lambda: getpass.getuser())  # Optional, defaults to system's current user
     owner_email = Column(String)  # Optional
 
-    password_salt = "this-is-a-very-strong-salt-for-strengthen-master-password"
+    password_salt = "this-is-a-very-strong-salt-to-strengthen-master-password"
 
     def set_vault_key_hash(self, vault_key):
         """
