@@ -147,13 +147,24 @@ Delete a credential from the database.
 
 If 'mnemonic' is not provided as an argument, the user will be prompted to enter it interactively.
 
-**Notes:**
-- This command requires the database to be initialized. It will:
-  - Prompt for the master password to derive the vault key.
-  - Query the database for the credential associated with the provided mnemonic.
-  - Display the details of the credential before deletion.
-  - Ask for confirmation before proceeding with deletion.
+**Example:**
+To delete the credential with mnemonic `facebook` use:
+```bash
+password-manager del facebook
+```
 
+---
+### change-password
+Command to change the master password for the password vault.
+
+This command allows the user to change the master password used to encrypt and decrypt
+credentials stored in the password vault.
+
+**Example:**
+To change the master password:
+```bash
+password-manager change-password
+```
 
 ## Getting Started
 

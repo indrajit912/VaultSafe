@@ -41,7 +41,7 @@ def input_master_passwd_and_verify():
     is ok then returns the user input.
     """
     bullet_unicode = '\u2022'
-    master_passwd = pwinput.pwinput("Enter your app password: ", mask=bullet_unicode)
+    master_passwd = pwinput.pwinput("Enter your master password: ", mask=bullet_unicode)
 
     vault = session.query(Vault).first()
     if not vault:
@@ -53,5 +53,5 @@ def input_master_passwd_and_verify():
         console.print(Panel("[bold red]Sorry, wrong password![/bold red]", border_style="red"))
         sys.exit(1)
     
-    console.print(Panel("[bold green]Password verified successfully![/bold green]", border_style="green"))
+    console.print(Panel("[bold green]Master password verified successfully![/bold green]", border_style="green"))
     return master_passwd

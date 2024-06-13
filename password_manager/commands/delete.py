@@ -52,7 +52,7 @@ def delete(mnemonic):
     # Get the credential associated with the mnemonic
     credential = mnemonic_entry.credential
     console.print("\n")
-    Credential.print_on_screen(credential.json(vault_key))
+    Credential._print_on_screen(credential.json(vault_key))
     console.print("\n")
 
     confirmation = Confirm.ask("Do you want to delete this credential?", default=False)
