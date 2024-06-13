@@ -14,7 +14,9 @@ setup(
         'SQLAlchemy',
         'cryptography',
         'click',
-        'pyperclip'
+        'pyperclip',
+        'pwinput',
+        'rich'
     ],
     entry_points={
         'console_scripts': [
@@ -26,7 +28,7 @@ setup(
     description='A CLI-based password manager',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/indrajit912/PasswordManager',
+    url='https://github.com/indrajit912/PasswordManager.git',
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',

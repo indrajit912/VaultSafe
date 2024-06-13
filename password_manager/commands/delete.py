@@ -4,12 +4,12 @@
 #
 import click
 from rich.console import Console
-from rich.panel import Panel
 from rich.prompt import Confirm
 
 from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key
+from password_manager.utils.cli_utils import assert_db_init
 
 console = Console()
 
@@ -19,8 +19,19 @@ def delete(mnemonic):
     """
     Delete a credential from the database.
 
-    If 'mnemonic' is not provided, prompt the user to enter it.
+    Args:
+        mnemonic (str, optional): The mnemonic associated with the credential to delete.
+
+    If 'mnemonic' is not provided as an argument, the user will be prompted to enter it interactively.
+
+    This command requires the database to be initialized. It will:
+    - Prompt for the master password to derive the vault key.
+    - Query the database for the credential associated with the provided mnemonic.
+    - Display the details of the credential before deletion.
+    - Ask for confirmation before proceeding with deletion.
     """
+    assert_db_init()
+
     console.rule("Delete Credential")
     
     # Take master password

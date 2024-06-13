@@ -9,9 +9,10 @@ from rich.panel import Panel
 from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key, encrypt
+from password_manager.utils.cli_utils import assert_db_init
 
 console = Console()
-# TODO: Add code to update mnemonics
+
 @click.command()
 @click.argument('mnemonic', required=False)
 @click.option('--uuid', help='UUID associated with the credential to update')
@@ -22,8 +23,36 @@ console = Console()
 @click.option('-url', '--url', help='Updated URL for the credential')
 def update(mnemonic, uuid, name, mnemonics, username, password, url):
     """
-    Update an existing credential.
+    Update an existing credential in the database.
+
+    This command allows updating various fields of a credential identified by either 'mnemonic' or 'uuid'.
+    At least one of these identifiers must be provided.
+
+    Args:
+        mnemonic (str, optional): The mnemonic associated with the credential to update.
+        uuid (str, optional): The UUID associated with the credential to update.
+        name (str, optional): Updated name for the credential.
+        mnemonics (list, optional): Updated mnemonics associated with the credential.
+        username (str, optional): Updated username for the credential.
+        password (str, optional): Updated password for the credential.
+        url (str, optional): Updated URL for the credential.
+
+    Notes:
+        - If 'mnemonics' are provided, existing mnemonics associated with the credential will be replaced.
+        - The command requires the database to be initialized ('init' command).
+
+    Examples:
+        To update a credential by mnemonic:
+        \b
+        $ password-manager update my_mnemonic -n "New Name" -u new_username
+
+        To update a credential by UUID:
+        \b
+        $ password-manager update --uuid <UUID> -p new_password
+
     """
+    assert_db_init()
+    
     console.rule("Update Credential")
 
     # Ensure at least one of mnemonic or uuid is provided

@@ -1,0 +1,184 @@
+# Indrajit's Password Manager
+
+## Overview
+
+Indrajit's Password Manager is a command-line tool designed to securely manage credentials and sensitive information. It provides functionalities to initialize a password vault, add, retrieve, update, and delete credentials stored in the vault.
+
+- **Author**: Indrajit Ghosh
+- **Copyright**: © 2024 Indrajit Ghosh. All rights reserved.
+
+## Command List
+
+### init
+
+Initialize the password vault.
+
+This command sets up the password vault database if it doesn't already exist. If the database exists,
+it provides an option to delete all existing data and start fresh.
+
+**Notes:**
+- The command initializes the database where credentials and vault information are stored.
+- It prompts for the master password and optional vault attributes like name, owner name, and owner email.
+- If the database already exists, it prompts to confirm deleting all existing data before reinitializing.
+
+**Examples:**
+To initialize the password vault:
+```bash
+password-manager init
+```
+---
+
+### info
+
+Display information about the password vault.
+
+This command retrieves and displays the following information:
+- Details about the currently initialized vault, including its name, owner, and creation timestamp.
+- Total number of credentials stored in the vault.
+- Total number of mnemonics associated with credentials in the vault.
+
+**Notes:**
+- The command requires the password vault to be initialized (`init` command) before use.
+- It prints the vault information, total number of credentials, and total number of mnemonics.
+- If no vault is found, it prompts the user to initialize the app using the `init` command first.
+
+**Examples:**
+To display information about the password vault:
+```bash
+password-manager info
+```
+
+---
+
+### add
+
+Add a new credential to the database.
+
+**Args:**
+- `name` (str): Name for the credential (required).
+- `mnemonics` (list): Mnemonics associated with the credential (required, multiple values).
+- `username` (str, optional): Username for the credential.
+- `password` (str, optional): Password for the credential.
+- `url` (str, optional): URL associated with the credential.
+
+**Notes:**
+- This command requires the database to be initialized ('init' command).
+- Mnemonics provided must be unique and not already associated with other credentials.
+
+**Examples:**
+To add a credential with a name and mnemonics:
+```bash
+password-manager add -n "This is my Facebook Acc" -mn fb -mn facebook
+```
+
+To add a credential with all details (name, mnemonics, username, password, and URL):
+
+```bash
+password-manager add -n "My Credential Name" -mn mnemonic1 -mn mnemonic2 -u username -p password -url https://example.com
+```
+
+---
+
+### get
+
+Retrieve and display a credential from the database.
+
+If 'mnemonic' is provided, display the credential associated with that mnemonic.
+If 'mnemonic' is not provided, display all credentials stored in the vault.
+
+**Args:**
+- `mnemonic` (str, optional): The mnemonic associated with the credential to retrieve.
+
+**Notes:**
+- This command requires the database to be initialized ('init' command).
+
+**Examples:**
+To retrieve a credential by mnemonic:
+```bash
+password-manager get fb
+```
+To retrieve all credentials:
+```bash
+password-manager get
+```
+
+
+---
+
+### update
+
+Update an existing credential in the database.
+
+This command allows updating various fields of a credential identified by either 'mnemonic' or 'uuid'.
+At least one of these identifiers must be provided.
+
+**Args:**
+- `mnemonic` (str, optional): The mnemonic associated with the credential to update.
+- `uuid` (str, optional): The UUID associated with the credential to update.
+- `name` (str, optional): Updated name for the credential.
+- `mnemonics` (list, optional): Updated mnemonics associated with the credential.
+- `username` (str, optional): Updated username for the credential.
+- `password` (str, optional): Updated password for the credential.
+- `url` (str, optional): Updated URL for the credential.
+
+**Notes:**
+- If 'mnemonics' are provided, existing mnemonics associated with the credential will be replaced.
+- The command requires the database to be initialized ('init' command).
+
+**Examples:**
+To update a credential by mnemonic:
+```bash
+password-manager update my_mnemonic -n "New Name" -u new_username # This will update only username
+```
+To update a credential by UUID:
+```bash
+password-manager update --uuid <UUID> -p new_password # This will update only the password; Use multiple flags such as:
+password-manager update --uuid <UUID> -p new_password -u new_username
+```
+
+---
+
+### delete
+
+Delete a credential from the database.
+
+**Args:**
+- `mnemonic` (str, optional): The mnemonic associated with the credential to delete.
+
+If 'mnemonic' is not provided as an argument, the user will be prompted to enter it interactively.
+
+**Notes:**
+- This command requires the database to be initialized. It will:
+  - Prompt for the master password to derive the vault key.
+  - Query the database for the credential associated with the provided mnemonic.
+  - Display the details of the credential before deletion.
+  - Ask for confirmation before proceeding with deletion.
+
+
+## Getting Started
+
+To get started with Indrajit's Password Manager, follow these steps:
+
+1. **Install Requirements:**
+   - Clone the repository to your local machine.
+   - Install Python (if not already installed).
+   - Install the required packages using `pip install -r requirements.txt`.
+
+2. **Initialize the Vault:**
+   - Run `password-manager init` to set up the password vault database.
+   - Follow the prompts to set the master password and optional vault attributes.
+
+3. **Manage Credentials:**
+   - Use commands like `add`, `get`, `update`, and `delete` to manage credentials securely.
+
+4. **Retrieve Information:**
+   - Use `password-manager info` to display details about the password vault and stored credentials.
+
+5. **Contribute:**
+   - Feel free to contribute to the project by submitting issues or pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+

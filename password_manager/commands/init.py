@@ -19,7 +19,23 @@ console = Console()
 
 @click.command()
 def init():
-    """Initialize the database."""
+    """
+    Initialize the password vault.
+
+    This command sets up the password vault database if it doesn't already exist. If the database exists,
+    it provides an option to delete all existing data and start fresh.
+
+    Notes:
+        - The command initializes the database where credentials and vault information are stored.
+        - It prompts for the master password and optional vault attributes like name, owner name, and owner email.
+        - If the database already exists, it prompts to confirm deleting all existing data before reinitializing.
+
+    Examples:
+        To initialize the password vault:
+        \b
+        $ password-manager init
+
+    """
     init_db()
 
 def init_db():

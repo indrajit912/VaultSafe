@@ -13,21 +13,18 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 
-from password_manager.commands import init, add, get, update, delete
-from password_manager.utils.cli_utils import clear_terminal_screen
-from password_manager.db.models import session, Vault
+from password_manager.commands import init, add, get, update, delete, info
+from password_manager.utils.cli_utils import clear_terminal_screen, check_db_init
+
+console = Console()
 
 # Basic information
 app_name = "Indrajit's Password Manager"
 current_year = date.today().year
 copyright_statement = f"© {current_year} Indrajit Ghosh. All rights reserved."
 
-# TODO: create an info commnad: Getting vault
-# vault = session.query(Vault).first()
-
 # Function to print basic information
 def print_basic_info():
-    console = Console()
 
     clear_terminal_screen()
 
@@ -44,16 +41,27 @@ def print_basic_info():
     console.print(info_table)
     console.print("\n")
 
+@click.command()
+def help():
+    """Displays help about the available commands."""
+    console.print(Panel("Help - Password Manager CLI", style="green", title="Command List"))
+
+    for command in cli.commands.values():
+        if command is not help:  # Skip displaying help for the help command itself
+            console.print(f"\n[bold yellow]{command.name}[/bold yellow]: {command.help}")
 
 @click.group()
 def cli():
     pass
 
 cli.add_command(init.init)
+cli.add_command(help, name='help')
+cli.add_command(info.info)
 cli.add_command(add.add)
 cli.add_command(get.get)
 cli.add_command(update.update)
 cli.add_command(delete.delete, name='del')
+
 
 if __name__ == '__main__':
     print_basic_info()

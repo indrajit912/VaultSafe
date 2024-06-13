@@ -8,6 +8,7 @@ from rich.console import Console
 from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key
+from password_manager.utils.cli_utils import assert_db_init
 
 console = Console()
 
@@ -15,8 +16,29 @@ console = Console()
 @click.argument('mnemonic', required=False)
 def get(mnemonic):
     """
-    Retrieve and display a credential. If no mnemonic is given, display all credentials.
+    Retrieve and display a credential from the database.
+
+    If 'mnemonic' is provided, display the credential associated with that mnemonic.
+    If 'mnemonic' is not provided, display all credentials stored in the vault.
+
+    Args:
+        mnemonic (str, optional): The mnemonic associated with the credential to retrieve.
+
+    Notes:
+        - This command requires the database to be initialized ('init' command).
+
+    Examples:
+        To retrieve a credential by mnemonic:
+        \b
+        $ password-manager get my_mnemonic
+
+        To retrieve all credentials:
+        \b
+        $ password-manager get
+
     """
+    assert_db_init()
+    
     console.rule("Retrieve Credential")
     
     # Take master password

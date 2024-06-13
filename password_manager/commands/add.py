@@ -9,9 +9,9 @@ from rich.panel import Panel
 from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import get_password, input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key, encrypt, generate_fernet_key
+from password_manager.utils.cli_utils import assert_db_init
 
 console = Console()
-
 
 @click.command()
 @click.option('-n', '--name', required=True, help='Name for the credential')
@@ -21,8 +21,31 @@ console = Console()
 @click.option('-url', '--url', required=False, help='URL for the credential')
 def add(name, mnemonics, username, password, url):
     """
-    Add a new credential.
+    Add a new credential to the database.
+
+    Args:
+        name (str): Name for the credential (required).
+        mnemonics (list): Mnemonics associated with the credential (required, multiple values).
+        username (str, optional): Username for the credential.
+        password (str, optional): Password for the credential.
+        url (str, optional): URL associated with the credential.
+
+    Notes:
+        - This command requires the database to be initialized ('init' command).
+        - Mnemonics provided must be unique and not already associated with other credentials.
+
+    Examples:
+        To add a credential with a name and mnemonics:
+        \b
+        $ password-manager add -n MyCredential -mn mnemonic1 mnemonic2
+
+        To add a credential with all details (name, mnemonics, username, password, and URL):
+        \b
+        $ password-manager add -n MyCredential -mn mnemonic1 mnemonic2 -u username -p password -url https://example.com
+
     """
+    assert_db_init()
+
     console.rule("Add Credential")
 
     # Take master password
