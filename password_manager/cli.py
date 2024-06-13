@@ -13,7 +13,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 
-from password_manager.commands import init, add, get, delete
+from password_manager.commands import init, add, get, update, delete
 from password_manager.utils.cli_utils import clear_terminal_screen
 from password_manager.db.models import session, Vault
 
@@ -52,6 +52,7 @@ def cli():
 cli.add_command(init.init)
 cli.add_command(add.add)
 cli.add_command(get.get)
+cli.add_command(update.update)
 cli.add_command(delete.delete, name='del')
 
 if __name__ == '__main__':

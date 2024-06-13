@@ -6,8 +6,7 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.db.models import session, Credential, Mnemonic, Vault
-from password_manager.utils.cli_utils import input_password
+from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import get_password, input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key, encrypt, generate_fernet_key
 
@@ -33,7 +32,7 @@ def add(name, mnemonics, username, password, url):
     if username is None:
         username = click.prompt("Enter the username for the credential (optional)", default='')
     if password is None:
-        password = get_password(info_msg="Enter the password for the credential (optional): ", success_msg='')
+        password = get_password(info_msg="Enter the password for the credential (optional): ", success_msg='Password saved.')
     if url is None:
         url = click.prompt("Enter the URL for the credential (optional)", default='')
 

@@ -34,7 +34,7 @@ def get(mnemonic):
         # Get the credential associated with the mnemonic
         credential = mnemonic_entry.credential
         console.print("\n")
-        Credential.print_on_screen(credential.json(vault_key))
+        credential.print_on_screen(vault_key)
     else:
         # Query all credentials
         credentials = session.query(Credential).all()
@@ -44,4 +44,4 @@ def get(mnemonic):
         
         for i, credential in enumerate(credentials):
             console.print("\n")
-            Credential.print_on_screen(credential.json(vault_key), copy_to_clipboard=False, count=i + 1)
+            Credential._print_on_screen(credential.json(vault_key), copy_to_clipboard=False, count=i + 1)

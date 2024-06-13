@@ -199,8 +199,11 @@ class Credential(Base):
             'key': self.encrypted_key
         }
     
+    def print_on_screen(self, vault_key):
+        self._print_on_screen(credential_data=self.json(vault_key))
+    
     @staticmethod
-    def print_on_screen(credential_data, copy_to_clipboard:bool=True, count:int=None):
+    def _print_on_screen(credential_data, copy_to_clipboard:bool=True, count:int=None):
         """
         Prints the relevant info related to the Credential on the terminal screen for the user.
 
