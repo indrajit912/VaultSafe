@@ -16,10 +16,11 @@ console = Console()
 @click.argument('mnemonic', required=False)
 @click.option('--uuid', help='UUID associated with the credential to update')
 @click.option('-n', '--name', help='Updated name for the credential')
+@click.option('-mn', '--mnemonics', required=True, multiple=True, help='Mnemonics for the credential')
 @click.option('-u', '--username', help='Updated username for the credential')
 @click.option('-p', '--password', help='Updated password for the credential')
 @click.option('-url', '--url', help='Updated URL for the credential')
-def update(mnemonic, uuid, name, username, password, url):
+def update(mnemonic, uuid, name, mnemonics, username, password, url):
     """
     Update an existing credential.
     """
@@ -56,6 +57,19 @@ def update(mnemonic, uuid, name, username, password, url):
         credential.password = encrypt(password, credential_key)
     if url:
         credential.url = encrypt(url, credential_key)
+    if mnemonics:
+        new_mnemonics = []
+        # Check if any of the provided mnemonics already exist
+        existing_mnemonics = session.query(Mnemonic.name).filter(Mnemonic.name.in_(mnemonics)).all()
+        existing_mnemonic_names = {mnemonic.name for mnemonic in existing_mnemonics}
+
+        for mnemonic in mnemonics:
+            if mnemonic in existing_mnemonic_names:
+                console.print(f"[yellow]Note: The mnemonic '{mnemonic}' already exists and cannot be reused for a new credential. Skipped![/yellow]")
+            else:
+                # Update the Credential.mnemonics list 
+                pass
+                
 
     session.commit()
 
