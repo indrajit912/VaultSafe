@@ -3,3 +3,4 @@ cryptography
 click
 pyperclip
 pwinput
+rich

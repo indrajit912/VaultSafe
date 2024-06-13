@@ -8,7 +8,7 @@
 #      [2] `password-manager --help`
 # 
 import click
-from password_manager.commands import init, add
+from password_manager.commands import init, add, get
 
 @click.group()
 def cli():
@@ -16,6 +16,7 @@ def cli():
 
 cli.add_command(init.init)
 cli.add_command(add.add)
+cli.add_command(get.get)
 
 if __name__ == '__main__':
     cli()

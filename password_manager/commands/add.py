@@ -3,10 +3,9 @@
 # Created On: Jun 12, 2024
 # 
 import click
-import pwinput
 from password_manager.db.models import session, Credential, Mnemonic, Vault
 from password_manager.utils.cli_utils import input_password
-from password_manager.utils.auth_utils import get_password
+from password_manager.utils.auth_utils import get_password, input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key, encrypt, generate_fernet_key
 
 
@@ -18,25 +17,15 @@ from password_manager.utils.crypto_utils import derive_vault_key, encrypt, gener
 @click.option('-url', '--url', required=False, help='URL for the credential')
 def add(name, mnemonics, username, password, url):
     """Add a new credential."""
-    master_passwd = input_password(info_msg="Enter your app password: ")
-
-    vault = session.query(Vault).first()
-    if not vault:
-        click.echo("Vault not initialized.")
-        return
-    
-    # Check master_password
-    if not vault.check_password(master_passwd):
-        click.echo("Sorry wrong password!")
-        return
+    master_passwd = input_master_passwd_and_verify()
     
     # Take credential details
     if name is None:
-        name = input("Enter a name for the credential (e.g- 'My Facebook account' or 'Gmail 2014 Account'): ")
+        name = click.prompt("Enter a name for the credential (e.g- 'My Facebook account' or 'Gmail 2014 Account')")
     if url is None:
-        url = input("Enter the url of the credential (optional): ")
+        url = click.prompt("Enter the url of the credential (optional)", default='')
     if username is None:
-        username = input("Enter the username for the credential (optional): ")
+        username = click.prompt("Enter the username for the credential (optional)", default='')
     if password is None:
         password = get_password(info_msg="Enter the password for the credential (optional): ", success_msg='')
 
@@ -61,22 +50,25 @@ def add(name, mnemonics, username, password, url):
         encrypted_key = encrypted_credential_key
     )
 
+    # Query all mnemonics
+    existing_mnemonics = session.query(Mnemonic.name).all()
+    existing_mnemonic_names = {mnemonic.name for mnemonic in existing_mnemonics}
+
+    # Check if any of the provided mnemonics already exist
+    for mnemonic in mnemonics:
+        if mnemonic in existing_mnemonic_names:
+            click.echo(f" - NOTE: the mnemonic '{mnemonic}' already exists in the database and cannot be used for a new credential. Skipped!")
+            return
+
     # Add the credential to the db
     session.add(credential)
-    
-    # Add mnemonics
-    
-    # Query all mnemonics
-    existing_mnemonics = session.query(Mnemonic).all()
+    session.commit()
 
     # Set the mnemonics to the Credential
     for mnemonic in mnemonics:
-        if not mnemonic in existing_mnemonics:
-            mnemonic_entry = Mnemonic(name=mnemonic, credential=credential)
-            session.add(mnemonic_entry)
-        else:
-            print(f" - NOTE: the mnemonic '{mnemonic}' already exists in the database and cannot be used for a new credential. Skipped!")
+        mnemonic_entry = Mnemonic(name=mnemonic, credential=credential)
+        session.add(mnemonic_entry)
 
     session.commit()
 
-    click.echo(f"Credential '{credential.name}' added.")
+    click.echo(f"Credential with the name '{credential.name}' added.")

@@ -5,6 +5,8 @@
 import click
 import shutil
 import pprint
+import socket
+import getpass
 
 from password_manager.db.models import Base, engine, session, Vault
 from password_manager.utils.auth_utils import get_password
@@ -29,9 +31,9 @@ def init_db(clear_screen:bool=True):
         )
 
         # Prompt user for optional attributes
-        vault_name = input("[-] Enter a name for the vault (optional, defaults to system's hostname): ")
-        owner_name = input("[-] Enter your name (optional, defaults to system's current user): ")
-        owner_email = input("[-] Enter your email (optional, defaults to None): ")
+        vault_name = click.prompt("[-] Enter a name for the vault", default=socket.gethostname())
+        owner_name = click.prompt("[-] Enter your name", default=getpass.getuser())
+        owner_email = click.prompt("[-] Enter your email (optional)", default='')
 
         # Create a Vault instance
         vault = Vault(
@@ -53,16 +55,16 @@ def init_db(clear_screen:bool=True):
         session.add(vault)
         session.commit()
 
-        print("\n[-] Password Vault initialized.\n")
+        click.echo("\n[-] Password Vault initialized.\n")
 
         # Print the hashes to verify
         pprint.pprint(vault.json())
     else:
-        print("Vault already exists.")
-        res = input("[-] Do you want to delete all existing data and start afresh? (y/n): ")
+        click.echo("Vault already exists.")
+        res = click.prompt("[-] Do you want to delete all existing data and start afresh? (y/n)")
         if res.lower() == 'y':
             shutil.rmtree(DOT_PASSWD_MANGR_DIR)
-            print("Existing vault deleted.")
+            click.echo("Existing vault deleted.")
             init_db(clear_screen=False)  # Call init_db again to recreate the database
 
 @click.command()
