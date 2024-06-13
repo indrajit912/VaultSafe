@@ -7,6 +7,34 @@ Indrajit's Password Manager is a command-line tool designed to securely manage c
 - **Author**: Indrajit Ghosh
 - **Copyright**: © 2024 Indrajit Ghosh. All rights reserved.
 
+## Installation
+
+### Using the Installation Script
+
+To install the Password Manager application using the provided [setup_password_manager.sh](./scripts/setup_password_manager.sh) script, follow these steps:
+
+1. **Download the Script:**
+
+   Download the  [setup_password_manager.sh](./scripts/setup_password_manager.sh) script to your computer.
+
+2. **Make the Script Executable:**
+
+   Open your terminal, navigate to the directory where you downloaded `setup_password_manager.sh`, and make it executable:
+
+   ```bash
+   chmod +x setup_password_manager.sh
+   ```
+3. Install the PasswordManager by the following command:
+   ```bash
+   ./setup_password_manager.sh
+   ```
+4. Run the PasswordManager:
+   ```bash
+   password-manager help
+   ```
+5. Uninstall PasswordManager by the [uninstall_password_manager.sh](./scripts/uninstall_password_manager.sh) script.
+
+
 ## Command List
 
 ### init
@@ -178,28 +206,6 @@ To change the master password:
 ```bash
 password-manager change-password
 ```
-
-## Getting Started
-
-To get started with Indrajit's Password Manager, follow these steps:
-
-1. **Install Requirements:**
-   - Clone the repository to your local machine.
-   - Install Python (if not already installed).
-   - Install the required packages using `pip install -r requirements.txt`.
-
-2. **Initialize the Vault:**
-   - Run `password-manager init` to set up the password vault database.
-   - Follow the prompts to set the master password and optional vault attributes.
-
-3. **Manage Credentials:**
-   - Use commands like `add`, `get`, `update`, and `delete` to manage credentials securely.
-
-4. **Retrieve Information:**
-   - Use `password-manager info` to display details about the password vault and stored credentials.
-
-5. **Contribute:**
-   - Feel free to contribute to the project by submitting issues or pull requests.
 
 ## License
 
