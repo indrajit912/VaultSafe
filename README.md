@@ -11,28 +11,28 @@ Indrajit's Password Manager is a command-line tool designed to securely manage c
 
 ### Using the Installation Script
 
-To install the Password Manager application using the provided [setup_password_manager.sh](./scripts/setup_password_manager.sh) script, follow these steps:
+To install the Password Manager application using the provided [install_password_manager.sh](./scripts/install_password_manager.sh) script, follow these steps:
 
 1. **Download the Script:**
 
-   Download the  [setup_password_manager.sh](./scripts/setup_password_manager.sh) script to your computer.
+   [Click here](https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/install_password_manager.sh) to download `install_password_manager.sh` script to your computer.
 
 2. **Make the Script Executable:**
 
-   Open your terminal, navigate to the directory where you downloaded `setup_password_manager.sh`, and make it executable:
+   Open your terminal, navigate to the directory where you downloaded `install_password_manager.sh`, and make it executable:
 
    ```bash
-   chmod +x setup_password_manager.sh
+   chmod +x install_password_manager.sh
    ```
 3. Install the PasswordManager by the following command:
    ```bash
-   ./setup_password_manager.sh
+   ./install_password_manager.sh
    ```
-4. Run the PasswordManager:
+4. Run the PasswordManager after restarting your terminal:
    ```bash
    password-manager help
    ```
-5. Uninstall PasswordManager by the [uninstall_password_manager.sh](./scripts/uninstall_password_manager.sh) script.
+5. Uninstall PasswordManager by the [uninstall_password_manager.sh](./scripts/uninstall_password_manager.sh) script. [Click here](https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/uninstall_password_manager.sh) to download that `uninstall_password_manager.sh` script.
 
 
 ## Command List
