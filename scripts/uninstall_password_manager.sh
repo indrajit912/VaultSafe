@@ -8,10 +8,14 @@
 # Usage: ./uninstall.sh [-f]
 #   -f: Perform a full cleanup including removing the main directory and undoing PATH changes.
 #
-# This script will uninstall the Password Manager application by removing:
-# - Virtual environment directories created during installation.
-# - Password manager binary directory and associated wrapper script.
-# - Optionally, undo changes made to PATH variables in shell configuration files.
+# This script performs the uninstallation of the password_manager CLI tool. 
+# It supports both partial and full cleanup based on the command-line options.
+# 
+# Steps:
+# 1. Parse command-line options for cleanup type.
+# 2. Remove the virtual environment and/or the entire password_manager directory.
+# 3. Remove any PATH additions which were added during installation from shell 
+# configuration files (.bashrc, .zshrc, .bash_profile).
 #
 # Note: Make sure to restart your terminal or run 'source ~/.bashrc' or 'source ~/.zshrc'
 #       after uninstallation to apply all changes.
@@ -39,15 +43,16 @@ if [[ "$1" == "-f" ]]; then
     fi
 else
     # Perform partial cleanup
-    if ls -d $VENV_DIR_PATTERN &>/dev/null; then
-        print_message "Removing virtual environment directories matching pattern: $VENV_DIR_PATTERN..."
-        rm -rf $VENV_DIR_PATTERN
-        echo "Virtual environment directories removed successfully."
+    if ls -d $VENV_DIR &>/dev/null; then
+        print_message "Removing virtual environment directory: $VENV_DIR..."
+        rm -rf $VENV_DIR
+        echo "Virtual environment directory removed successfully."
     else
-        print_message "No virtual environment directories found matching pattern: $VENV_DIR_PATTERN"
+        print_message "No virtual environment directory found: $VENV_DIR"
     fi
 fi
 
+# Step 2: Remove the PATH addition
 # Remove the PATH addition from .bashrc if the file exists
 if [ -f "$HOME/.bashrc" ]; then
     if grep -q "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.bashrc"; then
