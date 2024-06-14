@@ -3,11 +3,13 @@
 import os
 import sys
 import pwinput
+from datetime import date
+
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from datetime import date
 
+from password_manager.version import __version__
 from password_manager.config import APP_NAME, COPYRIGHT_STATEMENT, DATABASE_PATH
 
 console = Console()
@@ -46,6 +48,7 @@ def print_basic_info():
 
     # Create information table with centered alignment
     info_table = Table(show_header=False)
+    info_table.add_row("[center]Version[/center]", f"[center]{__version__}[/center]")
     info_table.add_row("[center]Copyright[/center]", f"[center]{COPYRIGHT_STATEMENT}[/center]")
     info_table.add_row("[center]Today's Date[/center]", f"[center]{date.today().strftime('%B %d, %Y')}[/center]")
 
