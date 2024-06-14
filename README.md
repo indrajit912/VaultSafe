@@ -9,6 +9,12 @@ Indrajit's Password Manager is a command-line tool designed to securely manage c
 
 ## Installation
 
+To install the app using a single terminal command, enter the following line:
+```bash
+curl -o ~/Downloads/install_password_manager.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/install_password_manager.sh && chmod +x ~/Downloads/install_password_manager.sh && ~/Downloads/install_password_manager.sh
+```
+This command downloads the installation script to your ~/Downloads directory, makes it executable, and then runs it to install the password manager.
+
 ### Using the Installation Script
 
 To install the Password Manager application using the provided [install_password_manager.sh](./scripts/install_password_manager.sh) script, follow these steps:
