@@ -60,17 +60,17 @@ fi
 # Step 2: Remove the PATH addition from shell configuration files
 if grep -q "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" "$HOME/.bashrc"; then
     print_message "Removing PATH addition from ~/.bashrc..."
-    sed -i "/export PATH=\\\$PATH:$PASSWD_MGR_BIN_DIR/d" "$HOME/.bashrc"
+    sed -i "\|export PATH=\$PATH:$PASSWD_MGR_BIN_DIR|d" "$HOME/.bashrc"
 fi
 
 if grep -q "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" "$HOME/.zshrc"; then
     print_message "Removing PATH addition from ~/.zshrc..."
-    sed -i "/export PATH=\\\$PATH:$PASSWD_MGR_BIN_DIR/d" "$HOME/.zshrc"
+    sed -i "\|export PATH=\$PATH:$PASSWD_MGR_BIN_DIR|d" "$HOME/.zshrc"
 fi
 
 if grep -q "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" "$HOME/.bash_profile"; then
     print_message "Removing PATH addition from ~/.bash_profile..."
-    sed -i "/export PATH=\\\$PATH:$PASSWD_MGR_BIN_DIR/d" "$HOME/.bash_profile"
+    sed -i "\|export PATH=\$PATH:$PASSWD_MGR_BIN_DIR|d" "$HOME/.bash_profile"
 fi
 
 print_message "Uninstallation complete! Please restart your terminal or run 'source ~/.bashrc' or 'source ~/.zshrc' to apply changes."
