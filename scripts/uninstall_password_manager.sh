@@ -57,7 +57,7 @@ fi
 if [ -f "$HOME/.bashrc" ]; then
     if grep -q "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.bashrc"; then
         print_message "Removing PATH addition from ~/.bashrc..."
-        sed -i "\|export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR|d" "$HOME/.bashrc"
+        grep -v "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.bashrc" > "$HOME/.bashrc.tmp" && mv "$HOME/.bashrc.tmp" "$HOME/.bashrc"
     fi
 else
     print_message "~/.bashrc file does not exist."
@@ -67,7 +67,7 @@ fi
 if [ -f "$HOME/.zshrc" ]; then
     if grep -q "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.zshrc"; then
         print_message "Removing PATH addition from ~/.zshrc..."
-        sed -i "\|export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR|d" "$HOME/.zshrc"
+        grep -v "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.zshrc" > "$HOME/.zshrc.tmp" && mv "$HOME/.zshrc.tmp" "$HOME/.zshrc"
     fi
 else
     print_message "~/.zshrc file does not exist."
@@ -77,7 +77,7 @@ fi
 if [ -f "$HOME/.bash_profile" ]; then
     if grep -q "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.bash_profile"; then
         print_message "Removing PATH addition from ~/.bash_profile..."
-        sed -i "\|export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR|d" "$HOME/.bash_profile"
+        grep -v "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.bash_profile" > "$HOME/.bash_profile.tmp" && mv "$HOME/.bash_profile.tmp" "$HOME/.bash_profile"
     fi
 else
     print_message "~/.bash_profile file does not exist."

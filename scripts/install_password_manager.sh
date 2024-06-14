@@ -10,9 +10,8 @@
 # 1. Check if Python 3.6 or higher is installed.
 # 2. Create necessary directories and virtual environment.
 # 3. Install dependencies and the Password Manager application.
-# 4. Create a wrapper script for easy command execution.
-# 5. Add the necessary directories to PATH in ~/.bashrc, ~/.zshrc, or ~/.bash_profile.
-# 6. Install xclip if not already installed (used for clipboard functionality).
+# 5. Add the venv/bin directory to PATH in ~/.bashrc, ~/.zshrc, or ~/.bash_profile.
+# 6. Install xclip (only on Linux) if not already installed (used for clipboard functionality).
 #
 # Note: Make sure to restart your terminal or run 'source ~/.bashrc' or 'source ~/.zshrc'
 #       after installation to apply all changes.
@@ -22,6 +21,15 @@
 function print_message() {
     echo -e "\033[1;32m$1\033[0m"
 }
+
+# Check which OS platform is running
+platform='unknown'
+unamestr=$(uname)
+if [ "$unamestr" = "Linux" ]; then
+   platform='linux'
+elif [ "$unamestr" = "Darwin" ]; then
+   platform='macos'
+fi
 
 # Step 1: Check if python3 is installed
 if ! command -v python3 &> /dev/null; then
@@ -65,7 +73,7 @@ python3 -m virtualenv "$VENV_DIR"
 print_message "Installing password-manager from $REPO_URL..."
 "$VENV_DIR/bin/python" -m pip install git+"$REPO_URL"
 
-
+# Step 7: Add the venv/bin directory to the PATH
 # Check and update .bashrc
 if [ -f "$HOME/.bashrc" ]; then
     if ! grep -q "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.bashrc"; then
@@ -96,12 +104,15 @@ else
     print_message "~/.bash_profile file does not exist."
 fi
 
-# Step 9: Check if xclip is installed, if not, install it
-if ! command -v xclip &> /dev/null; then
-    print_message "Installing xclip..."
-    sudo apt-get install xclip
-else
-    print_message "xclip is already installed."
+# Step 8: Check if platform is Linux and install xclip if required
+if [ "$(uname)" = "Linux" ]; then
+    # Check if xclip is installed, if not, install it
+    if ! command -v xclip &> /dev/null; then
+        print_message "Installing xclip..."
+        sudo apt-get install -y xclip
+    else
+        print_message "xclip is already installed."
+    fi
 fi
 
 print_message "Setup complete! You can now use the 'password-manager' command."
