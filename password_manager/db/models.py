@@ -195,8 +195,7 @@ class Credential(Base):
             'url': url_decrypted,
             'username': username_decrypted,
             'password': passwd_decrypted,
-            'mnemonics': [mn.name for mn in self.mnemonics],
-            'key': self.encrypted_key
+            'mnemonics': [mn.name for mn in self.mnemonics]
         }
     
     def print_on_screen(self, vault_key, **kwargs):

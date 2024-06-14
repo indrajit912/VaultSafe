@@ -13,7 +13,7 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.commands import change_master_passwd, init, add, get, update, delete, info, open, update_vault, update_password
+from password_manager.commands import change_master_passwd, init, add, get, update, delete, info, open, update_vault, update_password, export, import_credentials
 from password_manager.utils.cli_utils import print_basic_info
 
 console = Console()
@@ -43,6 +43,8 @@ cli.add_command(delete.delete, name='del')
 cli.add_command(open.open)
 cli.add_command(change_master_passwd.change_master_password)
 cli.add_command(update_vault.update_vault)
+cli.add_command(export.export)
+cli.add_command(import_credentials.import_credentials, name='import')
 
 
 if __name__ == '__main__':
