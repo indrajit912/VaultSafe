@@ -15,6 +15,13 @@ curl -o ~/Downloads/install_password_manager.sh https://raw.githubusercontent.co
 ```
 This command downloads the installation script to your ~/Downloads directory, makes it executable, and then runs it to install the password manager.
 
+To uninstall the app using a single terminal command, enter the following line:
+```bash
+curl -o ~/Downloads/uninstall_password_manager.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/uninstall_password_manager.sh && chmod +x ~/Downloads/uninstall_password_manager.sh && ~/Downloads/uninstall_password_manager.sh
+
+```
+
+
 ### Using the Installation Script
 
 To install the Password Manager application using the provided [install_password_manager.sh](./scripts/install_password_manager.sh) script, follow these steps:
