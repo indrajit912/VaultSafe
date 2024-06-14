@@ -40,10 +40,9 @@ fi
 
 # Define variables
 DOT_PASSWD_MGR_DIR="$HOME/.password_manager"
-VENV_DIR="$DOT_PASSWD_MGR_DIR/pwmenv-$(date +%d-%m-%Y)"
+VENV_DIR="$DOT_PASSWD_MGR_DIR/pwmenv"
+PASSWD_MGR_ENV_BIN_DIR="$VENV_DIR/bin"
 REPO_URL="https://github.com/indrajit912/PasswordManager.git"
-PASSWD_MGR_BIN_DIR="$DOT_PASSWD_MGR_DIR/bin"
-WRAPPER_SCRIPT="$PASSWD_MGR_BIN_DIR/pwm_wrapper"
 
 # Step 3: Ensure the base directory exists
 if [ ! -d "$DOT_PASSWD_MGR_DIR" ]; then
@@ -66,31 +65,35 @@ python3 -m virtualenv "$VENV_DIR"
 print_message "Installing password-manager from $REPO_URL..."
 "$VENV_DIR/bin/python" -m pip install git+"$REPO_URL"
 
-# Step 7: Create a wrapper script to activate the virtual environment and run the command
-print_message "Creating wrapper script at $WRAPPER_SCRIPT..."
-mkdir -p "$PASSWD_MGR_BIN_DIR"
-cat <<EOL > "$WRAPPER_SCRIPT"
-#!/bin/bash
-source "$VENV_DIR/bin/activate"
-exec password-manager "\$@"
-EOL
-chmod +x "$WRAPPER_SCRIPT"
 
-# Step 8: Ensure the wrapper script's directory is in the PATH
-# Check if the PASSWD_MGR_BIN_DIR directory is in the PATH in .bashrc
-if ! grep -q "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" "$HOME/.bashrc"; then
-    print_message "Adding $PASSWD_MGR_BIN_DIR to PATH in ~/.bashrc..."
-    echo "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" >> "$HOME/.bashrc"
+# Check and update .bashrc
+if [ -f "$HOME/.bashrc" ]; then
+    if ! grep -q "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.bashrc"; then
+        print_message "Adding $PASSWD_MGR_ENV_BIN_DIR to PATH in ~/.bashrc..."
+        echo "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" >> "$HOME/.bashrc"
+    fi
+else
+    print_message "~/.bashrc file does not exist."
 fi
-# Check if the PASSWD_MGR_BIN_DIR directory is in the PATH in .zshrc
-if ! grep -q "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" "$HOME/.zshrc"; then
-    print_message "Adding $PASSWD_MGR_BIN_DIR to PATH in ~/.zshrc..."
-    echo "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" >> "$HOME/.zshrc"
+
+# Check and update .zshrc
+if [ -f "$HOME/.zshrc" ]; then
+    if ! grep -q "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.zshrc"; then
+        print_message "Adding $PASSWD_MGR_ENV_BIN_DIR to PATH in ~/.zshrc..."
+        echo "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" >> "$HOME/.zshrc"
+    fi
+else
+    print_message "~/.zshrc file does not exist."
 fi
-# Check if the PASSWD_MGR_BIN_DIR directory is in the PATH in .bash_profile
-if ! grep -q "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" "$HOME/.bash_profile"; then
-    print_message "Adding $PASSWD_MGR_BIN_DIR to PATH in ~/.bash_profile..."
-    echo "export PATH=\$PATH:$PASSWD_MGR_BIN_DIR" >> "$HOME/.bash_profile"
+
+# Check and update .bash_profile
+if [ -f "$HOME/.bash_profile" ]; then
+    if ! grep -q "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" "$HOME/.bash_profile"; then
+        print_message "Adding $PASSWD_MGR_ENV_BIN_DIR to PATH in ~/.bash_profile..."
+        echo "export PATH=\$PATH:$PASSWD_MGR_ENV_BIN_DIR" >> "$HOME/.bash_profile"
+    fi
+else
+    print_message "~/.bash_profile file does not exist."
 fi
 
 # Step 9: Check if xclip is installed, if not, install it
