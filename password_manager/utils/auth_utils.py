@@ -12,7 +12,12 @@ from password_manager.db.models import session, Vault
 
 console = Console()
 
-def get_password(info_msg: str = "Enter your password: ", success_msg: str = "Password set successfully!", confirmation_msg:str="Confirm your password: "):
+def get_password(
+        info_msg: str = "Enter your password: ", 
+        success_msg: str = "Password set successfully!", 
+        warning_msg:str = "Passwords do not match. Please try again.\n", 
+        confirmation_msg:str="Confirm your password: "
+):
     """
     Prompt user to enter a password securely and confirm it.
 
@@ -33,7 +38,7 @@ def get_password(info_msg: str = "Enter your password: ", success_msg: str = "Pa
             console.print(Panel(f"[bold green]{success_msg}[/bold green]", border_style="green"))
             return password1
         else:
-            click.echo("Passwords do not match. Please try again.\n")
+            click.echo(warning_msg)
 
 def input_master_passwd_and_verify():
     """

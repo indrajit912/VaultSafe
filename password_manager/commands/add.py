@@ -9,7 +9,7 @@ from rich.panel import Panel
 from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import get_password, input_master_passwd_and_verify
 from password_manager.utils.crypto_utils import derive_vault_key, encrypt, generate_fernet_key
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info
+from password_manager.utils.cli_utils import assert_db_init, print_basic_info, multiline_input
 
 console = Console()
 
@@ -31,18 +31,6 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
     This command adds a new credential to the password vault database. It allows specifying 
     various attributes of the credential, including name, mnemonics, username, password, 
     recovery key, URL, primary email, secondary email, token, and notes.
-
-    Options:
-        -n, --name TEXT: Name for the credential (required).
-        -mn, --mnemonics TEXT: Mnemonics associated with the credential (required, multiple values).
-        -u, --username: Flag to add the username for the credential.
-        -pw, --password: Flag to add the password for the credential.
-        -rk, --recovery-key: Flag to add the recovery key (if any) for the credential.
-        -url, --url: Flag to add the URL for the credential.
-        -pe, --primary-email: Flag to add the primary email id associated with the credential.
-        -se, --secondary-email: Flag to add the secondary email id associated with the credential.
-        -tk, --token: Flag to add any token for the credential.
-        -nt, --notes: Flag to add notes that could be stored along with the credential.
 
     Examples:
         To add a credential with a name and mnemonics:
@@ -82,15 +70,14 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
         primary_email = click.prompt("Enter the primary email id associated with the credential", default='')
     if secondary_email:
         secondary_email = click.prompt("Enter the secondary email id associated with the credential", default='')
-    if notes:
-        notes = click.prompt("Write any notes related to the credential", default='')
     
     # Add token if flag is provided
     if token:
         token = get_password(
             info_msg="Enter the token: ",
             success_msg="Tokens matched!",
-            confirmation_msg="Confirm the token: "
+            confirmation_msg="Confirm the token: ",
+            warning_msg="Passwords do not match. Please try again.\n"
         )
         console.print(Panel("[bold green]Credential's token added successfully![/bold green]", style="bold green"))
 
@@ -102,6 +89,9 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
             confirmation_msg="Confirm the recovery key: "
         )
         console.print(Panel("[bold green]Credential's recovery key added successfully![/bold green]", style="bold green"))
+
+    if notes:
+        notes = multiline_input("Write any notes related to the credential (end with three empty lines):")
 
     # Derive the vault key
     vault_key = derive_vault_key(master_key=master_passwd)

@@ -8,8 +8,8 @@ from rich.panel import Panel
 
 from password_manager.db.models import session, Credential, Mnemonic
 from password_manager.utils.auth_utils import input_master_passwd_and_verify, get_password
-from password_manager.utils.crypto_utils import derive_vault_key, encrypt
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info
+from password_manager.utils.crypto_utils import derive_vault_key, encrypt, decrypt
+from password_manager.utils.cli_utils import assert_db_init, print_basic_info, multiline_input
 
 console = Console()
 
@@ -110,9 +110,6 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
     if secondary_email:
         new_se = click.prompt("Enter the new 'secondary email id' for the credential")
         credential.secondary_email = encrypt(new_se, credential_key)
-    if notes:
-        new_notes = click.prompt("Enter the new notes for the credential")
-        credential.notes = encrypt(new_notes, credential_key)
 
     # Update password if flag is provided
     if password:
@@ -144,6 +141,11 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
         credential.recovery_key = new_recovery_key_encrypted
         console.print(Panel("[bold green]Credential's recovery key changed successfully![/bold green]", style="bold green"))
     
+    if notes:
+        existing_notes = decrypt(credential.notes, credential_key) if credential.notes else ""
+        new_notes = multiline_input(f"Existing notes:\n{existing_notes}\n\nWrite any notes related to the credential (end with three empty lines):")
+        credential.notes = encrypt(new_notes, credential_key)
+
     if mnemonics:
         given_mnemonics = click.prompt("Enter the new set of mnemonics separated by white spaces (e.g mn1 mn2 mn3)")
         

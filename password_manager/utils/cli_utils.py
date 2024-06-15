@@ -23,6 +23,22 @@ def input_password(info_msg="Enter your password: "):
     pw = pwinput.pwinput(info_msg, mask=bullet_unicode)
     return pw
 
+def multiline_input(prompt):
+    """Prompt the user for multiline input."""
+    console.print(Panel(prompt, title="Input", style="bold blue"))
+    lines = []
+    empty_line_count = 0
+    while True:
+        line = input()
+        if line == "":
+            empty_line_count += 1
+            if empty_line_count == 3:
+                break
+        else:
+            empty_line_count = 0
+        lines.append(line)
+    return "\n".join(lines[:-2])
+
 def check_db_init():
     """Checks whether db is initialized or not."""
     if not DATABASE_PATH.exists():
