@@ -64,7 +64,7 @@ def export_credentials(credentials, vault_key, output_dir, file_format):
 
 
 @click.command()
-@click.option('--output-dir', '-o', default='.', help='Output directory for the exported file.')
+@click.option('--output-dir', '-o', default=Path.home() / 'Downloads', type=click.Path(), help='Output directory for the exported file.')
 @click.option('--file-format', '-f', type=click.Choice(['json', 'csv']), default='json', 
               help='File format for export (json or csv). Default is json.')
 def export(output_dir, file_format):
