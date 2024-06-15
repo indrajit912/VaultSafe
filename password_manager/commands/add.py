@@ -17,12 +17,12 @@ console = Console()
 @click.option('-n', '--name', required=True, help='Name for the credential')
 @click.option('-mn', '--mnemonics', required=True, multiple=True, help='Mnemonics for the credential')
 @click.option('-u', '--username', is_flag=True, help='Username for the credential')
-@click.option('-p', '--password', is_flag=True, help="Flag to add the password.")
-@click.option('-k', '--recovery-key', is_flag=True, help='Recovery key (if any) for the credential')
+@click.option('-pw', '--password', is_flag=True, help="Flag to add the password.")
+@click.option('-rk', '--recovery-key', is_flag=True, help='Recovery key (if any) for the credential')
 @click.option('-url', '--url', is_flag=True, help='URL for the credential')
 @click.option('-pe', '--primary-email', is_flag=True, help='Primary email id associated with the credential')
 @click.option('-se', '--secondary-email', is_flag=True, help='Secondary email id associated with the credential')
-@click.option('-t', '--token', is_flag=True, help="Flag to add any token for the credential.")
+@click.option('-tk', '--token', is_flag=True, help="Flag to add any token for the credential.")
 @click.option('-nt', '--notes', is_flag=True, help='Notes that could be stored along with the credential')
 def add(name, mnemonics, username, password, recovery_key, url, primary_email, secondary_email, token, notes):
     """
@@ -36,12 +36,12 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
         -n, --name TEXT: Name for the credential (required).
         -mn, --mnemonics TEXT: Mnemonics associated with the credential (required, multiple values).
         -u, --username: Flag to add the username for the credential.
-        -p, --password: Flag to add the password for the credential.
-        -k, --recovery-key: Flag to add the recovery key (if any) for the credential.
+        -pw, --password: Flag to add the password for the credential.
+        -rk, --recovery-key: Flag to add the recovery key (if any) for the credential.
         -url, --url: Flag to add the URL for the credential.
         -pe, --primary-email: Flag to add the primary email id associated with the credential.
         -se, --secondary-email: Flag to add the secondary email id associated with the credential.
-        -t, --token: Flag to add any token for the credential.
+        -tk, --token: Flag to add any token for the credential.
         -nt, --notes: Flag to add notes that could be stored along with the credential.
 
     Examples:
@@ -51,11 +51,11 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
 
         To add a credential with all details (name, mnemonics, username, password, and URL):
         \b
-        $ password-manager add -n "My Facebook Account" -mn fb -mn facebook -u -p -url
+        $ password-manager add -n "My Facebook Account" -mn fb -mn facebook -u -pw -url
 
         To add a credential with additional details (recovery key, primary email, secondary email, token, and notes):
         \b
-        $ password-manager add -n "My Credential" -mn mnemonic1 -mn mnemonic2 -u -p -k -url -pe -se -t -nt
+        $ password-manager add -n "My Credential" -mn mnemonic1 -mn mnemonic2 -u -pw -rk -url -pe -se -tk -nt
     """
     print_basic_info()
     assert_db_init()

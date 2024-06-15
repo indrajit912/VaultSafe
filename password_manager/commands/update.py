@@ -19,9 +19,9 @@ console = Console()
 @click.option('-n', '--name', help='Updated name for the credential')
 @click.option('-mn', '--mnemonics', multiple=True, help='Updated mnemonics for the credential')
 @click.option('-u', '--username', help='Updated username for the credential')
-@click.option('-p', '--password', is_flag=True, help="Flag to update the password.")
-@click.option('-t', '--token', is_flag=True, help="Flag to update the token.")
-@click.option('-k', '--recovery-key', is_flag=True, help="Flag to update the recovery key.")
+@click.option('-pw', '--password', is_flag=True, help="Flag to update the password.")
+@click.option('-tk', '--token', is_flag=True, help="Flag to update the token.")
+@click.option('-rk', '--recovery-key', is_flag=True, help="Flag to update the recovery key.")
 @click.option('-pe', '--primary-email', required=False, help='Primary email id associated with the credential')
 @click.option('-se', '--secondary-email', required=False, help='Secondary email id associated with the credential')
 @click.option('-url', '--url', help='Updated URL for the credential')
@@ -43,9 +43,9 @@ def update(mnemonic, uuid, name, mnemonics, username, password, token, recovery_
         -n, --name TEXT: Updated name for the credential.
         -mn, --mnemonics TEXT: Updated mnemonics for the credential (can be specified multiple times).
         -u, --username TEXT: Updated username for the credential.
-        -p, --password: Flag to update the password.
-        -t, --token: Flag to update the token.
-        -k, --recovery-key: Flag to update the recovery key.
+        -pw, --password: Flag to update the password.
+        -tk, --token: Flag to update the token.
+        -rk, --recovery-key: Flag to update the recovery key.
         -pe, --primary-email TEXT: Primary email id associated with the credential.
         -se, --secondary-email TEXT: Secondary email id associated with the credential.
         -url, --url TEXT: Updated URL for the credential.
@@ -68,13 +68,13 @@ def update(mnemonic, uuid, name, mnemonics, username, password, token, recovery_
         $ password-manager update linkedin -nt "These are some notes related to the credential."
 
         Update the password of a credential:
-        $ password-manager update twitter -p
+        $ password-manager update twitter -pw
 
         Update the token of a credential:
-        $ password-manager update facebook -t
+        $ password-manager update facebook -tk
 
         Update the recovery key of a credential:
-        $ password-manager update linkedin -k
+        $ password-manager update linkedin -rk
     """
     print_basic_info()
     assert_db_init()

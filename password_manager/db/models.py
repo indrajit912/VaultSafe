@@ -243,26 +243,28 @@ class Credential(Base):
         password = credential_data.get('password')
         password_display = '\\[encrypted]' if password != Credential.NONE_STR else password
         recovery_key = credential_data.get('recovery_key')
+        recovery_key_display = '\\[encrypted]' if recovery_key != Credential.NONE_STR else recovery_key
 
         primary_email = credential_data.get('primary_email')
         secondary_email = credential_data.get('secondary_email')
         token = credential_data.get('token')
+        token_display = '\\[encrypted]' if token != Credential.NONE_STR else token
         notes = credential_data.get('notes')
         mnemonics:list = credential_data.get('mnemonics')
 
         table = Table(show_header=True, header_style="bold cyan", border_style="bright_blue")
         table.add_column("Field", style="bold", justify="right")
         table.add_column("Value", style="bold magenta", justify="left")
-        # TODO: Use [encrypted] text for token and recovery key
+        
         table.add_row("ID", f"[yellow]{id}[/yellow]")
         table.add_row("UUID", f"[green]{uuid}[/green]")
         table.add_row("URL", f"[bright_blue]{url}[/bright_blue]")
         table.add_row("Username", f"[bright_green]{username}[/bright_green]")
         table.add_row("Password", f"[red]{password_display}[/red]")
-        table.add_row("Recovery Key", f"[red]{recovery_key}[/red]")
+        table.add_row("Recovery Key", f"[red]{recovery_key_display}[/red]")
         table.add_row("Primary Email", f"[magenta]{primary_email}[/magenta]")
         table.add_row("Secondary Email", f"[magenta]{secondary_email}[/magenta]")
-        table.add_row("Token", f"[magenta]{token}[/magenta]")
+        table.add_row("Token", f"[magenta]{token_display}[/magenta]")
 
         if mnemonics:
             mnemonics_str = ", ".join(f"[cyan]{mnemonic}[/cyan]" for mnemonic in mnemonics)
