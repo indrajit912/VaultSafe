@@ -37,7 +37,47 @@ curl -o ~/Downloads/install_password_manager.sh https://raw.githubusercontent.co
 curl -o ~/Downloads/uninstall_password_manager.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/uninstall_password_manager.sh && chmod +x ~/Downloads/uninstall_password_manager.sh && ~/Downloads/uninstall_password_manager.sh
 ```
 
-Windows users can clone the repository to use the app.
+### Installation Instructions for Windows
+
+1. **Ensure Python >= 3.6 is Installed:**
+   - Check if Python is installed by opening a command prompt (`cmd`) and typing:
+     ```cmd
+     python --version
+     ```
+     If Python is not installed or the version is below 3.6, download and install Python from [python.org](https://www.python.org/downloads/).
+
+2. **Install virtualenv:**
+   - Open a command prompt (`cmd`) and install `virtualenv` using pip:
+     ```cmd
+     pip install virtualenv
+     ```
+
+3. **Clone the Repository and Install PasswordManager:**
+   - Open a command prompt (`cmd`) and navigate to the directory where you want to install the app.
+
+   - Create a virtual environment:
+     ```cmd
+     virtualenv venv
+     ```
+     Activate the virtual environment:
+     ```cmd
+     venv\Scripts\activate
+     ```
+
+   - Install the PasswordManager package from the cloned repository:
+     ```cmd
+     pip install git+https://github.com/indrajit912/PasswordManager.git
+
+     ```
+
+   This will install the PasswordManager application and its dependencies into the virtual environment.
+
+### Usage
+
+- To run the PasswordManager application after installation, ensure your virtual environment is activated (`venv\Scripts\activate` in the command prompt), then you can start the application by the command:
+  ```cmd
+  password-manager help
+  ```
 
 
 ## Commands
