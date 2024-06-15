@@ -1,7 +1,7 @@
 # This script handles the export command.
 # Author: Indrajit Ghosh
 # Created On: Jun 14, 2024
-# TODO: Fix this with the token, recovery key etc
+# 
 
 import click
 import json
@@ -43,6 +43,11 @@ def export_credentials(credentials, vault_key, output_dir, file_format):
         credential_data['url'] = None if _cred_data_json['url'] == Credential.NONE_STR else _cred_data_json['url']
         credential_data['username'] = None if _cred_data_json['username'] == Credential.NONE_STR else _cred_data_json['username']
         credential_data['password'] = None if _cred_data_json['password'] == Credential.NONE_STR else _cred_data_json['password']
+        credential_data['recovery_key'] = None if _cred_data_json['recovery_key'] == Credential.NONE_STR else _cred_data_json['recovery_key']
+        credential_data['primary_email'] = None if _cred_data_json['primary_email'] == Credential.NONE_STR else _cred_data_json['primary_email']
+        credential_data['secondary_email'] = None if _cred_data_json['secondary_email'] == Credential.NONE_STR else _cred_data_json['secondary_email']
+        credential_data['token'] = None if _cred_data_json['token'] == Credential.NONE_STR else _cred_data_json['token']
+        credential_data['notes'] = None if _cred_data_json['notes'] == Credential.NONE_STR else _cred_data_json['notes']
 
         credentials_data.append(credential_data)
     

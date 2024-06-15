@@ -203,7 +203,6 @@ class Credential(Base):
         token_decrypted = decrypt(self.token, credential_key) if self.token else self.NONE_STR
         notes_decrypted = decrypt(self.notes, credential_key) if self.notes else self.NONE_STR
         
-        # TODO: Add encrypted_key and encryption alog to the json
         return {
             'id': self.id,
             'uuid': self.uuid,
@@ -216,7 +215,9 @@ class Credential(Base):
             'secondary_email': secondary_email_decrypted,
             'token': token_decrypted,
             'notes': notes_decrypted,
-            'mnemonics': [mn.name for mn in self.mnemonics]
+            'mnemonics': [mn.name for mn in self.mnemonics],
+            'encrypted_key': self.encrypted_key.decode(),
+            'encryption_algorithm': self.encryption_algorithm
         }
     
     def print_on_screen(self, vault_key, **kwargs):
@@ -264,7 +265,8 @@ class Credential(Base):
         table.add_row("Recovery Key", f"[red]{recovery_key_display}[/red]")
         table.add_row("Primary Email", f"[magenta]{primary_email}[/magenta]")
         table.add_row("Secondary Email", f"[magenta]{secondary_email}[/magenta]")
-        table.add_row("Token", f"[magenta]{token_display}[/magenta]")
+        table.add_row("Token", f"[red]{token_display}[/red]")
+        
 
         if mnemonics:
             mnemonics_str = ", ".join(f"[cyan]{mnemonic}[/cyan]" for mnemonic in mnemonics)

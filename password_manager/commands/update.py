@@ -15,18 +15,17 @@ console = Console()
 
 @click.command()
 @click.argument('mnemonic', required=False)
-@click.option('--uuid', help='UUID associated with the credential to update')
-@click.option('-n', '--name', help='Updated name for the credential')
-@click.option('-mn', '--mnemonics', multiple=True, help='Updated mnemonics for the credential')
-@click.option('-u', '--username', help='Updated username for the credential')
+@click.option('-n', '--name', is_flag=True, help='Flag to update name for the credential')
+@click.option('-mn', '--mnemonics', is_flag=True, help='Flag to update mnemonics for the credential')
+@click.option('-u', '--username', is_flag=True, help='Flag to update username for the credential')
 @click.option('-pw', '--password', is_flag=True, help="Flag to update the password.")
 @click.option('-tk', '--token', is_flag=True, help="Flag to update the token.")
 @click.option('-rk', '--recovery-key', is_flag=True, help="Flag to update the recovery key.")
-@click.option('-pe', '--primary-email', required=False, help='Primary email id associated with the credential')
-@click.option('-se', '--secondary-email', required=False, help='Secondary email id associated with the credential')
-@click.option('-url', '--url', help='Updated URL for the credential')
-@click.option('-nt', '--notes', required=False, help='Notes that could be stored along with the credential')
-def update(mnemonic, uuid, name, mnemonics, username, password, token, recovery_key, url, primary_email, secondary_email, notes):
+@click.option('-pe', '--primary-email', is_flag=True, help='Flag to update Primary email id associated with the credential')
+@click.option('-se', '--secondary-email', is_flag=True, help='Flag to update Secondary email id associated with the credential')
+@click.option('-url', '--url', is_flag=True, help='Flag to update URL for the credential')
+@click.option('-nt', '--notes', is_flag=True, help='Flag to update notes stored along with the credential')
+def update(mnemonic, name, mnemonics, username, password, token, recovery_key, url, primary_email, secondary_email, notes):
     """
     Update an existing credential in the database.
 
@@ -81,22 +80,14 @@ def update(mnemonic, uuid, name, mnemonics, username, password, token, recovery_
     
     console.rule("Update Credential")
 
-    # Ensure at least one of mnemonic or uuid is provided
-    if not (mnemonic or uuid):
-        console.print("[yellow]Please provide either 'mnemonic' or 'uuid' to identify the credential to update.[/yellow]")
-        return
-
     # Take master password
     master_passwd = input_master_passwd_and_verify()
 
-    # Query credential based on mnemonic or uuid
-    if mnemonic:
-        credential = session.query(Credential).join(Mnemonic).filter(Mnemonic.name == mnemonic).first()
-    elif uuid:
-        credential = session.query(Credential).filter_by(uuid=uuid).first()
+    # Query credential based on mnemonic
+    credential = session.query(Credential).join(Mnemonic).filter(Mnemonic.name == mnemonic).first()
 
     if not credential:
-        console.print(f"[yellow]Credential not found with the provided identifier '{mnemonic or uuid}'. Update operation aborted.[/yellow]")
+        console.print(f"[yellow]Credential not found with the provided identifier '{mnemonic}'. Update operation aborted.[/yellow]")
         return
 
     # Derive vault key
@@ -105,17 +96,23 @@ def update(mnemonic, uuid, name, mnemonics, username, password, token, recovery_
 
     # Update credential fields if provided
     if name:
-        credential.name = name
+        new_name = click.prompt("Enter the new name for the credential")
+        credential.name = new_name
     if username:
-        credential.username = encrypt(username, credential_key)
+        new_username = click.prompt("Enter the new username for the credential")
+        credential.username = encrypt(new_username, credential_key)
     if url:
-        credential.url = encrypt(url, credential_key)
+        new_url = click.prompt("Enter the new URL for the credential")
+        credential.url = encrypt(new_url, credential_key)
     if primary_email:
-        credential.primary_email = encrypt(primary_email, credential_key)
+        new_pe = click.prompt("Enter the new 'primary email id' for the credential")
+        credential.primary_email = encrypt(new_pe, credential_key)
     if secondary_email:
-        credential.secondary_email = encrypt(secondary_email, credential_key)
+        new_se = click.prompt("Enter the new 'secondary email id' for the credential")
+        credential.secondary_email = encrypt(new_se, credential_key)
     if notes:
-        credential.notes = notes
+        new_notes = click.prompt("Enter the new notes for the credential")
+        credential.notes = encrypt(new_notes, credential_key)
 
     # Update password if flag is provided
     if password:
@@ -139,7 +136,6 @@ def update(mnemonic, uuid, name, mnemonics, username, password, token, recovery_
 
     # Update recovery key if flag is provided
     if recovery_key:
-        new_recovery_key = click.prompt("Enter the new recovery key", hide_input=True, confirmation_prompt=True)
         new_recovery_key = get_password(
             info_msg="Enter the new recovery key: ",
             success_msg="Recovery keys matched!"
@@ -149,6 +145,11 @@ def update(mnemonic, uuid, name, mnemonics, username, password, token, recovery_
         console.print(Panel("[bold green]Credential's recovery key changed successfully![/bold green]", style="bold green"))
     
     if mnemonics:
+        given_mnemonics = click.prompt("Enter the new set of mnemonics separated by white spaces (e.g mn1 mn2 mn3)")
+        
+        # Split the input into a list of mnemonics
+        mnemonics = given_mnemonics.split()
+
         new_mnemonics = []
         # Query all mnemonics whose credential_id is not equal to the current credential's id
         existing_mnemonics = session.query(Mnemonic.name).filter(

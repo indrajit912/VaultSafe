@@ -2,7 +2,6 @@
 # Author: Indrajit Ghosh
 # Created On: Jun 14, 2024
 # 
-# TODO: Fix this with the token, recovery key etc
 import click
 import json
 import csv
@@ -34,6 +33,11 @@ def import_credentials_from_json(file_path, vault_key):
         url = data.get('url')
         username = data.get('username')
         password = data.get('password')
+        recovery_key = data.get('recovery_key')
+        primary_email = data.get('primary_email')
+        secondary_email = data.get('secondary_email')
+        token = data.get('token')
+        notes = data.get('notes')
         mnemonics = list(set([m.strip() for m in data.get('mnemonics', '').split(',') if m.strip()]))
 
         try:
@@ -52,6 +56,11 @@ def import_credentials_from_json(file_path, vault_key):
             encrypted_username = encrypt(username, credential_key) if username else None
             encrypted_password = encrypt(password, credential_key) if password else None
             encrypted_url = encrypt(url, credential_key) if url else None
+            recovery_key_encrypted = encrypt(recovery_key, credential_key) if recovery_key else None
+            primary_email_encrypted = encrypt(primary_email, credential_key) if primary_email else None
+            secondary_email_encrypted = encrypt(secondary_email, credential_key) if secondary_email else None
+            token_encrypted = encrypt(token, credential_key) if token else None
+            notes_encrypted = encrypt(notes, credential_key) if notes else None
             encrypted_credential_key = encrypt(credential_key, vault_key)
 
             # Create the credential object
@@ -60,7 +69,12 @@ def import_credentials_from_json(file_path, vault_key):
                 url=encrypted_url,
                 username=encrypted_username,
                 password=encrypted_password,
-                encrypted_key=encrypted_credential_key
+                encrypted_key=encrypted_credential_key,
+                recovery_key=recovery_key_encrypted,
+                primary_email=primary_email_encrypted,
+                secondary_email=secondary_email_encrypted,
+                token=token_encrypted,
+                notes=notes_encrypted
             )
 
             # Add the credential to the database
@@ -96,6 +110,11 @@ def import_credentials_from_csv(file_path, vault_key):
             url = row.get('url')
             username = row.get('username')
             password = row.get('password')
+            recovery_key = row.get('recovery_key')
+            primary_email = row.get('primary_email')
+            secondary_email = row.get('secondary_email')
+            token = row.get('token')
+            notes = row.get('notes')
             mnemonics = list(set([m.strip() for m in row.get('mnemonics', '').split(',') if m.strip()]))
 
             try:
@@ -114,6 +133,11 @@ def import_credentials_from_csv(file_path, vault_key):
                 encrypted_username = encrypt(username, credential_key) if username else None
                 encrypted_password = encrypt(password, credential_key) if password else None
                 encrypted_url = encrypt(url, credential_key) if url else None
+                recovery_key_encrypted = encrypt(recovery_key, credential_key) if recovery_key else None
+                primary_email_encrypted = encrypt(primary_email, credential_key) if primary_email else None
+                secondary_email_encrypted = encrypt(secondary_email, credential_key) if secondary_email else None
+                token_encrypted = encrypt(token, credential_key) if token else None
+                notes_encrypted = encrypt(notes, credential_key) if notes else None
                 encrypted_credential_key = encrypt(credential_key, vault_key)
 
                 # Create the credential object
@@ -122,7 +146,12 @@ def import_credentials_from_csv(file_path, vault_key):
                     url=encrypted_url,
                     username=encrypted_username,
                     password=encrypted_password,
-                    encrypted_key=encrypted_credential_key
+                    encrypted_key=encrypted_credential_key,
+                    recovery_key=recovery_key_encrypted,
+                    primary_email=primary_email_encrypted,
+                    secondary_email=secondary_email_encrypted,
+                    token=token_encrypted,
+                    notes=notes_encrypted
                 )
 
                 # Add the credential to the database

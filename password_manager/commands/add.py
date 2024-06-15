@@ -82,8 +82,6 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
         primary_email = click.prompt("Enter the primary email id associated with the credential", default='')
     if secondary_email:
         secondary_email = click.prompt("Enter the secondary email id associated with the credential", default='')
-    if token:
-        token = click.prompt("Enter the token (if any) associated with this credential", default='')
     if notes:
         notes = click.prompt("Write any notes related to the credential", default='')
     
@@ -91,7 +89,8 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
     if token:
         token = get_password(
             info_msg="Enter the token: ",
-            success_msg="Tokens matched!"
+            success_msg="Tokens matched!",
+            confirmation_msg="Confirm the token: "
         )
         console.print(Panel("[bold green]Credential's token added successfully![/bold green]", style="bold green"))
 
@@ -99,7 +98,8 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
     if recovery_key:
         recovery_key = get_password(
             info_msg="Enter the recovery key: ",
-            success_msg="Recovery keys matched!"
+            success_msg="Recovery keys matched!",
+            confirmation_msg="Confirm the recovery key: "
         )
         console.print(Panel("[bold green]Credential's recovery key added successfully![/bold green]", style="bold green"))
 

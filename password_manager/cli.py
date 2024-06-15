@@ -17,6 +17,8 @@ from password_manager.commands import change_master_passwd, init, add, get, upda
     open, update_vault, export, import_credentials, generate_strong_passwd, copy_credential
 from password_manager.utils.cli_utils import print_basic_info
 
+# TODO: Find a way to take multiline input for Credential.notes
+
 console = Console()
 
 @click.command()
