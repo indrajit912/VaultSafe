@@ -9,7 +9,7 @@ import socket
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text
 from datetime import datetime, timezone
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -129,6 +129,8 @@ class Mnemonic(Base):
 class Credential(Base):
     __tablename__ = 'credential'
     NONE_STR = "Not Provided"
+    DEFAULT_ENCRYPTION_ALGO = "Fernet"
+
     id = Column(Integer, primary_key=True)
     uuid = Column(String, default=lambda: uuid.uuid4().hex)  # Optional, defaults to a generated UUID
 
@@ -136,9 +138,16 @@ class Credential(Base):
     url = Column(String, nullable=True)
     username = Column(String, nullable=True)
     password = Column(String, nullable=True)
-    
+    recovery_key = Column(String, nullable=True)
+
+    primary_email = Column(String, nullable=True)
+    secondary_email = Column(String, nullable=True)
+    token = Column(String, nullable=True, default=None)
+    notes = Column(Text, nullable=True)
+
     # Add encrypted_key attr. This key is used to encrypt username and password
     encrypted_key = Column(String, nullable=False)
+    encryption_algorithm = Column(String, default=DEFAULT_ENCRYPTION_ALGO)
 
     mnemonics = relationship('Mnemonic', back_populates='credential', cascade='all, delete-orphan')
 
@@ -187,7 +196,14 @@ class Credential(Base):
         url_decrypted = decrypt(self.url, credential_key) if self.url else self.NONE_STR
         username_decrypted = decrypt(self.username, credential_key) if self.username else self.NONE_STR
         passwd_decrypted = decrypt(self.password, credential_key) if self.password else self.NONE_STR
-
+        recovery_key_decrypted = decrypt(self.recovery_key, credential_key) if self.recovery_key else self.NONE_STR
+        
+        primary_email_decrypted = decrypt(self.primary_email, credential_key) if self.primary_email else self.NONE_STR
+        secondary_email_decrypted = decrypt(self.secondary_email, credential_key) if self.secondary_email else self.NONE_STR
+        token_decrypted = decrypt(self.token, credential_key) if self.token else self.NONE_STR
+        notes_decrypted = decrypt(self.notes, credential_key) if self.notes else self.NONE_STR
+        
+        # TODO: Add encrypted_key and encryption alog to the json
         return {
             'id': self.id,
             'uuid': self.uuid,
@@ -195,6 +211,11 @@ class Credential(Base):
             'url': url_decrypted,
             'username': username_decrypted,
             'password': passwd_decrypted,
+            'recovery_key': recovery_key_decrypted,
+            'primary_email': primary_email_decrypted,
+            'secondary_email': secondary_email_decrypted,
+            'token': token_decrypted,
+            'notes': notes_decrypted,
             'mnemonics': [mn.name for mn in self.mnemonics]
         }
     
@@ -221,21 +242,33 @@ class Credential(Base):
         username = credential_data.get('username')
         password = credential_data.get('password')
         password_display = '\\[encrypted]' if password != Credential.NONE_STR else password
+        recovery_key = credential_data.get('recovery_key')
+
+        primary_email = credential_data.get('primary_email')
+        secondary_email = credential_data.get('secondary_email')
+        token = credential_data.get('token')
+        notes = credential_data.get('notes')
         mnemonics:list = credential_data.get('mnemonics')
 
         table = Table(show_header=True, header_style="bold cyan", border_style="bright_blue")
         table.add_column("Field", style="bold", justify="right")
         table.add_column("Value", style="bold magenta", justify="left")
-
+        # TODO: Use [encrypted] text for token and recovery key
         table.add_row("ID", f"[yellow]{id}[/yellow]")
         table.add_row("UUID", f"[green]{uuid}[/green]")
         table.add_row("URL", f"[bright_blue]{url}[/bright_blue]")
         table.add_row("Username", f"[bright_green]{username}[/bright_green]")
         table.add_row("Password", f"[red]{password_display}[/red]")
+        table.add_row("Recovery Key", f"[red]{recovery_key}[/red]")
+        table.add_row("Primary Email", f"[magenta]{primary_email}[/magenta]")
+        table.add_row("Secondary Email", f"[magenta]{secondary_email}[/magenta]")
+        table.add_row("Token", f"[magenta]{token}[/magenta]")
 
         if mnemonics:
             mnemonics_str = ", ".join(f"[cyan]{mnemonic}[/cyan]" for mnemonic in mnemonics)
             table.add_row("Mnemonics", mnemonics_str)
+
+        table.add_row("Notes", f"[magenta]{notes}[/magenta]")
 
         panel = Panel(table, title=count + name, title_align="left", border_style="bold magenta")
 

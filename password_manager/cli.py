@@ -14,7 +14,7 @@ from rich.console import Console
 from rich.panel import Panel
 
 from password_manager.commands import change_master_passwd, init, add, get, update, delete, info, \
-    open, update_vault, update_password, export, import_credentials, generate_strong_passwd
+    open, update_vault, export, import_credentials, generate_strong_passwd
 from password_manager.utils.cli_utils import print_basic_info
 
 console = Console()
@@ -40,7 +40,6 @@ cli.add_command(generate_strong_passwd.generate)
 cli.add_command(add.add)
 cli.add_command(get.get)
 cli.add_command(update.update)
-cli.add_command(update_password.update_password)
 cli.add_command(delete.delete, name='del')
 cli.add_command(open.open)
 cli.add_command(change_master_passwd.change_master_password)
