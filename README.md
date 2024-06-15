@@ -1,227 +1,232 @@
-# Indrajit's Password Manager
+# Password Manager CLI
 
-## Overview
+Welcome to Indrajit's Password Manager, a command-line interface (CLI) tool for securely managing your credentials. This README provides an overview of the commands and usage instructions.
 
-Indrajit's Password Manager is a command-line tool designed to securely manage credentials and sensitive information. It provides functionalities to initialize a password vault, add, retrieve, update, and delete credentials stored in the vault.
+## Version
+- Version: 0.1.0
+- Copyright: © 2024 Indrajit Ghosh. All rights reserved.
 
-- **Author**: Indrajit Ghosh
-- **Copyright**: © 2024 Indrajit Ghosh. All rights reserved.
+
+## Table of Contents
+- [Installation](#installation)
+- [Initialization](#initialization)
+- [Vault Information](#vault-information)
+- [Password Generation](#password-generation)
+- [Credential Management](#credential-management)
+  - [Add Credential](#add-credential)
+  - [Retrieve Credential](#retrieve-credential)
+  - [Update Credential](#update-credential)
+  - [Update Password](#update-password)
+  - [Delete Credential](#delete-credential)
+  - [Open Credential](#open-credential)
+- [Master Password](#master-password)
+- [Vault Management](#vault-management)
+- [Import/Export](#importexport)
+- [License](#license)
 
 ## Installation
 
-To install the app using a single terminal command, enter the following line:
-```bash
+To install and uninstall this on Linux/MacOS, use the provided shell scripts  [install_password_manager.sh](./scripts/install_password_manager.sh) and [uninstall_password_manager](./scripts/uninstall_password_manager.sh). Alternatively, you can run the following one-liners:
+
+**Install**:
+```sh
 curl -o ~/Downloads/install_password_manager.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/install_password_manager.sh && chmod +x ~/Downloads/install_password_manager.sh && ~/Downloads/install_password_manager.sh
 ```
-This command downloads the installation script to your ~/Downloads directory, makes it executable, and then runs it to install the password manager.
 
-To uninstall the app using a single terminal command, enter the following line:
-```bash
+**Uninstall**:
+```sh
 curl -o ~/Downloads/uninstall_password_manager.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/uninstall_password_manager.sh && chmod +x ~/Downloads/uninstall_password_manager.sh && ~/Downloads/uninstall_password_manager.sh
-
 ```
 
-
-### Using the Installation Script
-
-To install the Password Manager application using the provided [install_password_manager.sh](./scripts/install_password_manager.sh) script, follow these steps:
-
-1. **Download the Script:**
-
-   [Click here](https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/install_password_manager.sh) to download `install_password_manager.sh` script to your computer.
-
-2. **Make the Script Executable:**
-
-   Open your terminal, navigate to the directory where you downloaded `install_password_manager.sh`, and make it executable:
-
-   ```bash
-   chmod +x install_password_manager.sh
-   ```
-3. Install the PasswordManager by the following command:
-   ```bash
-   ./install_password_manager.sh
-   ```
-4. Run the PasswordManager after restarting your terminal:
-   ```bash
-   password-manager help
-   ```
-5. Uninstall PasswordManager by the [uninstall_password_manager.sh](./scripts/uninstall_password_manager.sh) script. [Click here](https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/uninstall_password_manager.sh) to download that `uninstall_password_manager.sh` script.
+Windows users can clone the repository to use the app.
 
 
-## Command List
+## Commands
 
-### init
+### Initialization
 
+#### `init`
 Initialize the password vault.
 
-This command sets up the password vault database if it doesn't already exist. If the database exists,
-it provides an option to delete all existing data and start fresh.
-
-**Notes:**
-- The command initializes the database where credentials and vault information are stored.
-- It prompts for the master password and optional vault attributes like name, owner name, and owner email.
-- If the database already exists, it prompts to confirm deleting all existing data before reinitializing.
-
-**Examples:**
-To initialize the password vault:
-```bash
-password-manager init
+```sh
+$ password-manager init
 ```
----
+- Sets up the password vault database if it doesn't exist.
+- Prompts for the master password and optional vault attributes (name, owner name, and owner email).
+- If the database exists, confirms deleting existing data before reinitializing.
 
-### info
+### Vault Information
 
+#### `info`
 Display information about the password vault.
 
-This command retrieves and displays the following information:
-- Details about the currently initialized vault, including its name, owner, and creation timestamp.
-- Total number of credentials stored in the vault.
-- Total number of mnemonics associated with credentials in the vault.
-
-**Notes:**
-- The command requires the password vault to be initialized (`init` command) before use.
-- It prints the vault information, total number of credentials, and total number of mnemonics.
-- If no vault is found, it prompts the user to initialize the app using the `init` command first.
-
-**Examples:**
-To display information about the password vault:
-```bash
-password-manager info
+```sh
+$ password-manager info
 ```
 
----
+### Password Generation
 
-### add
+#### `generate`
+Generate strong passwords of specified length.
 
+Options:
+- -l, --length (int): Length of the password to be generated. Default is 16.
+- -c, --count (int): Number of passwords to generate. Default is 1.
+
+Examples:
+```sh
+$ password-manager generate
+$ password-manager generate --length 20
+$ password-manager generate --length 20 --count 3
+```
+
+### Credential Management
+#### Add Credential
+#### `add`
 Add a new credential to the database.
 
-**Args:**
-- `name` (str): Name for the credential (required).
-- `mnemonics` (list): Mnemonics associated with the credential (required, multiple values).
-- `username` (str, optional): Username for the credential.
-- `password` (str, optional): Password for the credential.
-- `url` (str, optional): URL associated with the credential.
+Options:
+- -n, --name TEXT: Name for the credential (required).
+- -mn, --mnemonics TEXT: Mnemonics associated with the credential (required, multiple values).
+- -u, --username TEXT: Username for the credential (optional).
+- -p, --password TEXT: Password for the credential (optional).
+- -url, --url TEXT: URL associated with the credential (optional).
 
-**Notes:**
-- This command requires the database to be initialized ('init' command).
-- Mnemonics provided must be unique and not already associated with other credentials.
-
-**Examples:**
-To add a credential with a name and mnemonics:
-```bash
-password-manager add -n "This is my Facebook Acc" -mn fb -mn facebook
+**Examples**:
+```sh
+$ password-manager add -n "My Credential Name" -mn mnemonic1 -mn mnemonic2
+$ password-manager add -n "My Facebook Account" -mn fb -mn facebook -u username -p password -url https://example.com
 ```
 
-To add a credential with all details (name, mnemonics, username, password, and URL):
+### Retrieve Credential
 
-```bash
-password-manager add -n "My Credential Name" -mn mnemonic1 -mn mnemonic2 -u username -p password -url https://example.com
-```
-
----
-
-### get
-
+#### `get`
 Retrieve and display a credential from the database.
 
-If 'mnemonic' is provided, display the credential associated with that mnemonic.
-If 'mnemonic' is not provided, display all credentials stored in the vault.
+Args:
+- mnemonic (str, optional): The mnemonic associated with the credential to retrieve.
 
-**Args:**
-- `mnemonic` (str, optional): The mnemonic associated with the credential to retrieve.
-
-**Notes:**
-- This command requires the database to be initialized ('init' command).
-
-**Examples:**
-To retrieve a credential by mnemonic:
-```bash
-password-manager get fb
-```
-To retrieve all credentials:
-```bash
-password-manager get
+**Examples**:
+```sh
+$ password-manager get my_mnemonic
+$ password-manager get
 ```
 
+### Update Credential
 
----
-
-### update
-
+#### `update`
 Update an existing credential in the database.
 
-This command allows updating various fields of a credential identified by either 'mnemonic' or 'uuid'.
-At least one of these identifiers must be provided.
+Options:
+- -mnemonic (str, optional): Mnemonic identifier of the credential to update.
+- --uuid TEXT: UUID associated with the credential to update.
+- -n, --name TEXT: Updated name for the credential.
+- -mn, --mnemonics TEXT: Updated mnemonics for the credential (can be specified multiple times).
+- -u, --username TEXT: Updated username for the credential.
+- -url, --url TEXT: Updated URL for the credential.
 
-**Args:**
-- `mnemonic` (str, optional): The mnemonic associated with the credential to update.
-- `uuid` (str, optional): The UUID associated with the credential to update.
-- `name` (str, optional): Updated name for the credential.
-- `mnemonics` (list, optional): Updated mnemonics associated with the credential.
-- `username` (str, optional): Updated username for the credential.
-- `password` (str, optional): Updated password for the credential.
-- `url` (str, optional): Updated URL for the credential.
+Examples:
+```sh
+$ password-manager update facebook -mn "new_mnemonic1" -mn "new_mnemonic2" -url "https://newurl.com"
 
-**Notes:**
-- If 'mnemonics' are provided, existing mnemonics associated with the credential will be replaced.
-- The command requires the database to be initialized ('init' command).
+$ password-manager update --uuid "123456" -n "New Credential Name" -u "new_username"
 
-**Examples:**
-To update a credential by mnemonic:
-```bash
-password-manager update my_mnemonic -n "New Name" -u new_username # This will update only username
-```
-To update a credential by UUID:
-```bash
-password-manager update --uuid <UUID> -p new_password # This will update only the password; Use multiple flags such as:
-password-manager update --uuid <UUID> -p new_password -u new_username
+$ password-manager update twitter -n "Updated Name"
 ```
 
----
-### open
+### Update Password
 
-Open a credential onto the browser from the database. If the password is saved for then the password will be copied to the clipboard.
+#### `update-password`
+Update the password of an existing credential.
 
-**Args:**
-- `mnemonic` (str, optional): The mnemonic associated with the credential to delete.
+Args:
+- mnemonic (str): The mnemonic identifier of the credential whose password is to be updated.
 
-**Example:**
-To open the credential with mnemonic `facebook` use:
-```bash
-password-manager open facebook
+**Example**:
+```sh
+$ password-manager update-password my_mnemonic
 ```
----
 
-### delete
+### Delete Credential
 
+#### `del`
 Delete a credential from the database.
 
-**Args:**
-- `mnemonic` (str, optional): The mnemonic associated with the credential to delete.
+Args:
+- mnemonic (str, optional): The mnemonic associated with the credential to delete.
 
-If 'mnemonic' is not provided as an argument, the user will be prompted to enter it interactively.
-
-**Example:**
-To delete the credential with mnemonic `facebook` use:
-```bash
-password-manager del facebook
+Example:
+```sh
+$ password-manager del my_mnemonic
 ```
 
----
-### change-password
-Command to change the master password for the password vault.
+### Open Credential
 
-This command allows the user to change the master password used to encrypt and decrypt
-credentials stored in the password vault.
+#### `open`
+Retrieve and display a credential from the database. If the credential's URL entry is not None, open the URL in a web browser.
 
-**Example:**
-To change the master password:
-```bash
-password-manager change-password
+Args:
+- -mnemonic TEXT: Mnemonic of the credential to be opened.
+
+**Example**:
+```sh
+$ password-manager open my_mnemonic
+```
+
+### Master Password
+
+#### `change-master-password`
+Change the master password for the password vault.
+
+**Example**:
+```sh
+$ password-manager change-master-password
+```
+
+### Vault Management
+
+#### `update-vault`
+Update the vault information in the database.
+
+Options:
+- -n, --name TEXT: Update the name of the Vault.
+- -o, --owner TEXT: Update the owner name for the Vault.
+- -e, --email TEXT: Update the owner email for the Vault.
+
+**Examples**:
+```sh
+$ password-manager update-vault -n "New Vault Name" -o "New Owner Name"
+$ password-manager update-vault -e "newemail@example.com"
+```
+
+### Import/Export
+
+#### `export`
+Export credentials to a specified file format.
+
+Options:
+- -o, --output_dir (str): Directory where the exported file will be saved.
+- -f, --file_format (str): File format for export ('json' or 'csv'). Defaults to 'json'.
+
+**Example**:
+```sh
+$ password-manager export --output-dir /path/to/export --file-format csv
+```
+
+#### `import`
+Import credentials from a JSON or CSV file into the database.
+
+Arg:
+- file_path (str): Path to the file containing credentials data.
+
+Option:
+- -f, --format (str): File format ('json' or 'csv').
+
+**Example**:
+```sh
+$ password-manager import /path/to/credentials.csv --format csv
 ```
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
-
-
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
