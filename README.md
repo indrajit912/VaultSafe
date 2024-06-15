@@ -26,7 +26,7 @@ Secure your credentials with confidence using the Secure Credentials Manager CLI
 
 ---
 
-**Repository:** [GitHub Link](https://github.com/indrajit912/PasswordManager.git)
+**Repository:** [GitHub Link](https://github.com/indrajit912/VaultSafe.git)
 
 **Developer:** [Indrajit Ghosh](https://indrajitghosh.onrender.com), SRF, Stat-Math Unit, Indian Statistical Institute, Bangalore
 
@@ -53,12 +53,12 @@ To install and uninstall this on Linux/MacOS, use the provided shell scripts  [i
 
 **Install**:
 ```sh
-curl -o ~/Downloads/install_vaultsafe.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/install_vaultsafe.sh && chmod +x ~/Downloads/install_vaultsafe.sh && ~/Downloads/install_vaultsafe.sh
+curl -o ~/Downloads/install_vaultsafe.sh https://raw.githubusercontent.com/indrajit912/VaultSafe/master/scripts/install_vaultsafe.sh && chmod +x ~/Downloads/install_vaultsafe.sh && ~/Downloads/install_vaultsafe.sh
 ```
 
 **Uninstall**:
 ```sh
-curl -o ~/Downloads/uninstall_vaultsafe.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/uninstall_vaultsafe.sh && chmod +x ~/Downloads/uninstall_vaultsafe.sh && ~/Downloads/uninstall_vaultsafe.sh
+curl -o ~/Downloads/uninstall_vaultsafe.sh https://raw.githubusercontent.com/indrajit912/VaultSafe/master/scripts/uninstall_vaultsafe.sh && chmod +x ~/Downloads/uninstall_vaultsafe.sh && ~/Downloads/uninstall_vaultsafe.sh
 ```
 
 ### Installation Instructions for Windows
@@ -76,7 +76,7 @@ curl -o ~/Downloads/uninstall_vaultsafe.sh https://raw.githubusercontent.com/ind
      pip install virtualenv
      ```
 
-3. **Clone the Repository and Install PasswordManager:**
+3. **Clone the Repository and Install VaultSafe:**
    - Open a command prompt (`cmd`) and navigate to the directory where you want to install the app.
 
    - Create a virtual environment:
@@ -88,17 +88,17 @@ curl -o ~/Downloads/uninstall_vaultsafe.sh https://raw.githubusercontent.com/ind
      venv\Scripts\activate
      ```
 
-   - Install the PasswordManager package from the cloned repository:
+   - Install the VaultSafe package from the cloned repository:
      ```cmd
-     pip install git+https://github.com/indrajit912/PasswordManager.git
+     pip install git+https://github.com/indrajit912/VaultSafe.git
 
      ```
 
-   This will install the PasswordManager application and its dependencies into the virtual environment.
+   This will install the VaultSafe application and its dependencies into the virtual environment.
 
 ### Usage
 
-- To run the PasswordManager application after installation, ensure your virtual environment is activated (`venv\Scripts\activate` in the command prompt), then you can start the application by the command:
+- To run the VaultSafe application after installation, ensure your virtual environment is activated (`venv\Scripts\activate` in the command prompt), then you can start the application by the command:
   ```cmd
   vaultsafe help
   ```
