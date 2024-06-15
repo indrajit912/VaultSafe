@@ -9,8 +9,8 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 
-from password_manager.version import __version__
-from password_manager.config import APP_NAME, COPYRIGHT_STATEMENT, DATABASE_PATH
+from vaultsafe.version import __version__
+from vaultsafe.config import APP_NAME, COPYRIGHT_STATEMENT, DATABASE_PATH
 
 console = Console()
 

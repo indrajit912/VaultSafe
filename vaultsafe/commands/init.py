@@ -10,11 +10,11 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 
-from password_manager.db.models import Base, engine, session, Vault
-from password_manager.utils.auth_utils import get_password
-from password_manager.utils.crypto_utils import derive_vault_key
-from password_manager.utils.cli_utils import print_basic_info
-from password_manager.config import DATABASE_PATH, DOT_PASSWD_MANGR_DIR
+from vaultsafe.db.models import Base, engine, session, Vault
+from vaultsafe.utils.auth_utils import get_password
+from vaultsafe.utils.crypto_utils import derive_vault_key
+from vaultsafe.utils.cli_utils import print_basic_info
+from vaultsafe.config import DATABASE_PATH, DOT_VAULTSAFE_DIR
 
 console = Console()
 
@@ -34,7 +34,7 @@ def init():
     Example:
         To initialize the password vault:
         \b
-        $ password-manager init
+        $ vaultsafe init
 
     """
     print_basic_info()
@@ -89,7 +89,7 @@ def init_db():
         console.print(Panel("[bold yellow]Vault already exists.[/bold yellow]", border_style="yellow"))
         res = Prompt.ask("[-] Do you want to delete all existing data and start afresh? (y/n)")
         if res.lower() == 'y':
-            shutil.rmtree(DOT_PASSWD_MANGR_DIR)
+            shutil.rmtree(DOT_VAULTSAFE_DIR)
             console.print(Panel("[bold red]Existing vault deleted.[/bold red]", border_style="red"))
             init_db()  # Recreate the database after deletion
 

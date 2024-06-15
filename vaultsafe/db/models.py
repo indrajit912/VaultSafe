@@ -9,15 +9,15 @@ import socket
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text
 from datetime import datetime, timezone
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from password_manager.utils.crypto_utils import sha256_hash, decrypt
-from password_manager.config import DATABASE_URL
+from vaultsafe.utils.crypto_utils import sha256_hash, decrypt
+from vaultsafe.config import DATABASE_URL
 
 Base = declarative_base()
 

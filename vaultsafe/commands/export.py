@@ -2,7 +2,6 @@
 # Author: Indrajit Ghosh
 # Created On: Jun 14, 2024
 # 
-
 import click
 import json
 import csv
@@ -12,10 +11,10 @@ from rich.console import Console
 from rich.panel import Panel
 from rich import print as rprint
 
-from password_manager.db.models import session, Credential
-from password_manager.utils.auth_utils import input_master_passwd_and_verify
-from password_manager.utils.crypto_utils import derive_vault_key
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info
+from vaultsafe.db.models import session, Credential
+from vaultsafe.utils.auth_utils import input_master_passwd_and_verify
+from vaultsafe.utils.crypto_utils import derive_vault_key
+from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -86,7 +85,7 @@ def export(output_dir, file_format):
 
     Example usage:
     \b
-    $ password-manager export --output-dir /path/to/export --file-format csv
+    $ vaultsafe export --output-dir /path/to/export --file-format csv
     """
     print_basic_info()
     assert_db_init()

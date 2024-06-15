@@ -6,8 +6,8 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.db.models import session, Vault
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info
+from vaultsafe.db.models import session, Vault
+from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -31,10 +31,10 @@ def update_vault(name, owner, email):
 
     Examples:
       Update the name and owner of the vault:
-      $ password-manager update-vault -n "New Vault Name" -o "New Owner Name"
+      $ vaultsafe update-vault -n "New Vault Name" -o "New Owner Name"
 
       Update only the owner email:
-      $ password-manager update-vault -e "newemail@example.com"
+      $ vaultsafe update-vault -e "newemail@example.com"
     """
     print_basic_info()
     assert_db_init()

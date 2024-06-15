@@ -1,10 +1,34 @@
-# Password Manager CLI
+# VaultSafe
 
-Welcome to Indrajit's Password Manager, a command-line interface (CLI) tool for securely managing your credentials. This README provides an overview of the commands and usage instructions.
+Welcome to VaultSafe, a robust and user-friendly command-line application designed to manage your credentials with the highest level of security. This app ensures that your sensitive information is protected using state-of-the-art encryption algorithms, providing end-to-end encryption to keep your data safe from prying eyes.
 
-## Version
-- Version: 1.0.0
-- Copyright: © 2024 Indrajit Ghosh. All rights reserved.
+**Key Features:**
+
+- **Add Credentials:** Easily add new credentials to your secure vault with multiple options such as `--token`, `--recovery-key`, `--primary-email` etc.
+- **Get Credentials:** Retrieve your stored credentials effortlessly using your `master_password`.
+- **Update Credentials:** Modify existing credentials securely.
+- **Delete Credentials:** Remove credentials that you no longer need with ease.
+- **Export Data:** Export your encrypted credentials in JSON or CSV format for backup or transfer purposes.
+- **Import Data:** Import exported credentials into the app seamlessly.
+
+**Security Highlights:**
+
+- **End-to-End Encryption:** All credential data is encrypted with a very strong encryption algorithm, ensuring that it remains secure from the moment you input it.
+- **Master Password Protection:** Your credentials can only be decrypted using a master password that you create and remember. Without this password, decryption is mathematically impossible, ensuring that only you have access to your data.
+
+**Usage:**
+The VaultSafe CLI is designed to be intuitive and easy to use, providing you with a simple yet powerful tool to manage your credentials securely. Whether you're adding a new set of credentials, updating existing ones, or exporting your data for safekeeping, this app provides all the functionalities you need in a straightforward command-line interface.
+
+**Contact:**
+For any issues, feature requests, or contributions, please reach out via the GitHub repository. Your feedback is highly valued and helps improve the app.
+
+Secure your credentials with confidence using the Secure Credentials Manager CLI, and rest assured that your sensitive information is protected by the highest standards of encryption.
+
+---
+
+**Repository:** [GitHub Link](https://github.com/indrajit912/PasswordManager.git)
+
+**Developer:** [Indrajit Ghosh](https://indrajitghosh.onrender.com), SRF, Stat-Math Unit, Indian Statistical Institute, Bangalore
 
 
 ## Table of Contents
@@ -25,16 +49,16 @@ Welcome to Indrajit's Password Manager, a command-line interface (CLI) tool for 
 
 ## Installation
 
-To install and uninstall this on Linux/MacOS, use the provided shell scripts  [install_password_manager.sh](./scripts/install_password_manager.sh) and [uninstall_password_manager](./scripts/uninstall_password_manager.sh). Alternatively, you can run the following one-liners:
+To install and uninstall this on Linux/MacOS, use the provided shell scripts  [install_vaultsafe.sh](./scripts/install_vaultsafe.sh) and [uninstall_vaultsafe](./scripts/uninstall_vaultsafe.sh). Alternatively, you can run the following one-liners:
 
 **Install**:
 ```sh
-curl -o ~/Downloads/install_password_manager.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/install_password_manager.sh && chmod +x ~/Downloads/install_password_manager.sh && ~/Downloads/install_password_manager.sh
+curl -o ~/Downloads/install_vaultsafe.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/install_vaultsafe.sh && chmod +x ~/Downloads/install_vaultsafe.sh && ~/Downloads/install_vaultsafe.sh
 ```
 
 **Uninstall**:
 ```sh
-curl -o ~/Downloads/uninstall_password_manager.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/uninstall_password_manager.sh && chmod +x ~/Downloads/uninstall_password_manager.sh && ~/Downloads/uninstall_password_manager.sh
+curl -o ~/Downloads/uninstall_vaultsafe.sh https://raw.githubusercontent.com/indrajit912/PasswordManager/master/scripts/uninstall_vaultsafe.sh && chmod +x ~/Downloads/uninstall_vaultsafe.sh && ~/Downloads/uninstall_vaultsafe.sh
 ```
 
 ### Installation Instructions for Windows
@@ -76,7 +100,7 @@ curl -o ~/Downloads/uninstall_password_manager.sh https://raw.githubusercontent.
 
 - To run the PasswordManager application after installation, ensure your virtual environment is activated (`venv\Scripts\activate` in the command prompt), then you can start the application by the command:
   ```cmd
-  password-manager help
+  vaultsafe help
   ```
 
 
@@ -88,7 +112,7 @@ curl -o ~/Downloads/uninstall_password_manager.sh https://raw.githubusercontent.
 Initialize the password vault.
 
 ```sh
-password-manager init
+vaultsafe init
 ```
 - Sets up the password vault database if it doesn't exist.
 - Prompts for the master password and optional vault attributes (name, owner name, and owner email).
@@ -100,7 +124,7 @@ password-manager init
 Display information about the password vault.
 
 ```sh
-password-manager info
+vaultsafe info
 ```
 
 ### Password Generation
@@ -114,9 +138,9 @@ Generate strong passwords of specified length.
 
 **Examples:**
 ```sh
-password-manager generate
-password-manager generate --length 20
-password-manager generate --length 20 --count 3
+vaultsafe generate
+vaultsafe generate --length 20
+vaultsafe generate --length 20 --count 3
 ```
 
 ### Credential Management
@@ -144,27 +168,27 @@ using their respective flags.
 **Examples**:
 - Add a credential with name and mnemonics:
 ```sh
-password-manager add -n "New Credential" -mn mnemonic1 -mn mnemonic2
+vaultsafe add -n "New Credential" -mn mnemonic1 -mn mnemonic2
 ```
 
 - Add a credential with username and password:
 ```sh
-password-manager add -n "New Credential" -mn mnemonic1 -u -pw
+vaultsafe add -n "New Credential" -mn mnemonic1 -u -pw
 ```
 
 - Add a credential with primary and secondary emails:
 ```sh
-password-manager add -n "New Credential" -mn mnemonic1 -pe -se
+vaultsafe add -n "New Credential" -mn mnemonic1 -pe -se
 ```
 
 - Add a credential with URL and notes:
 ```sh
-password-manager add -n "New Credential" -mn mnemonic1 -url -nt
+vaultsafe add -n "New Credential" -mn mnemonic1 -url -nt
 ```
 
 - Add a credential with recovery key and token:
 ```sh
-password-manager add -n "New Credential" -mn mnemonic1 -rk -tk
+vaultsafe add -n "New Credential" -mn mnemonic1 -rk -tk
 ```
 
 ### Retrieve Credential
@@ -178,11 +202,11 @@ Args:
 **Examples**:
 - To retrieve a credential by mnemonic:
 ```sh
-password-manager get my_mnemonic
+vaultsafe get my_mnemonic
 ```
 - To retrieve all credentials:
 ```sh
-password-manager get
+vaultsafe get
 ```
 
 ### Update Credential
@@ -213,42 +237,42 @@ mnemonic (str, required): Mnemonic identifier of the credential to update.
 **Examples:**
 - Update the name and username of a credential:
 ```sh
-password-manager update facebook -n -u
+vaultsafe update facebook -n -u
 ```
 
 - Update mnemonics and URL for a credential whose mnemonic is 'twitter':
 ```sh
-password-manager update twitter -mn -url
+vaultsafe update twitter -mn -url
 ```
 
 - Update only the name of a credential identified by mnemonic 'linkedin':
 ```sh
-password-manager update linkedin -n
+vaultsafe update linkedin -n
 ```
 
 - Update primary and secondary emails for a credential:
 ```sh
-password-manager update google -pe -se
+vaultsafe update google -pe -se
 ```
 
 - Update notes of a credential identified by mnemonic 'amazon':
 ```sh
-password-manager update amazon -nt
+vaultsafe update amazon -nt
 ```
 
 - Update the password of a credential:
 ```sh
-password-manager update microsoft -pw
+vaultsafe update microsoft -pw
 ```
 
 - Update the token of a credential:
 ```sh
-password-manager update github -tk
+vaultsafe update github -tk
 ```
 
 - Update the recovery key of a credential:
 ```sh
-password-manager update dropbox -rk
+vaultsafe update dropbox -rk
 ```
 
 
@@ -262,7 +286,7 @@ Delete a credential from the database.
 
 **Example:**
 ```sh
-$ password-manager del my_mnemonic
+$ vaultsafe del my_mnemonic
 ```
 
 ### Open Credential
@@ -275,7 +299,7 @@ Retrieve and display a credential from the database. If the credential's URL ent
 
 **Example**:
 ```sh
-password-manager open my_mnemonic
+vaultsafe open my_mnemonic
 ```
 
 ### Change Master Password
@@ -285,7 +309,7 @@ Change the master password for the password vault.
 
 **Example**:
 ```sh
-password-manager change-master-password
+vaultsafe change-master-password
 ```
 
 ### Vault Management
@@ -300,8 +324,8 @@ Update the vault information in the database.
 
 **Examples**:
 ```sh
-password-manager update-vault -n "New Vault Name" -o "New Owner Name"
-password-manager update-vault -e "newemail@example.com"
+vaultsafe update-vault -n "New Vault Name" -o "New Owner Name"
+vaultsafe update-vault -e "newemail@example.com"
 ```
 
 ### Import/Export
@@ -315,7 +339,7 @@ Options:
 
 **Example**:
 ```sh
-password-manager export --output-dir /path/to/export --file-format csv
+vaultsafe export --output-dir /path/to/export --file-format csv
 ```
 
 #### `import`
@@ -329,7 +353,7 @@ Import credentials from a JSON or CSV file into the database.
 
 **Example**:
 ```sh
-password-manager import /path/to/credentials.csv --format csv
+vaultsafe import /path/to/credentials.csv --format csv
 ```
 
 ## License

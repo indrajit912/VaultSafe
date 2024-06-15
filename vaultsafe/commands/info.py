@@ -6,8 +6,8 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.db.models import session, Vault, Credential, Mnemonic
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info
+from vaultsafe.db.models import session, Vault, Credential, Mnemonic
+from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -19,7 +19,7 @@ def info():
     Example:
         To display information about the password vault:
         \b
-        $ password-manager info
+        $ vaultsafe info
 
     """
     print_basic_info()

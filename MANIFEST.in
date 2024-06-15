@@ -1,5 +1,5 @@
 include README.md
 include LICENSE
 include requirements.txt
-recursive-include password_manager *.py
+recursive-include vaultsafe *.py
 recursive-include tests *.py

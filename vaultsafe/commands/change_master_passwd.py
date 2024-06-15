@@ -7,10 +7,10 @@ import pwinput
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.db.models import session, Vault, Credential
-from password_manager.utils.auth_utils import input_master_passwd_and_verify
-from password_manager.utils.crypto_utils import derive_vault_key, encrypt, decrypt
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info
+from vaultsafe.db.models import session, Vault, Credential
+from vaultsafe.utils.auth_utils import input_master_passwd_and_verify
+from vaultsafe.utils.crypto_utils import derive_vault_key, encrypt, decrypt
+from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -25,7 +25,7 @@ def change_master_password():
     Example:
         To change the master password:
         
-        $ password-manager change-master-password
+        $ vaultsafe change-master-password
     """
     print_basic_info()
     assert_db_init()

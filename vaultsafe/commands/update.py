@@ -6,10 +6,10 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.db.models import session, Credential, Mnemonic
-from password_manager.utils.auth_utils import input_master_passwd_and_verify, get_password
-from password_manager.utils.crypto_utils import derive_vault_key, encrypt, decrypt
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info, multiline_input
+from vaultsafe.db.models import session, Credential, Mnemonic
+from vaultsafe.utils.auth_utils import input_master_passwd_and_verify, get_password
+from vaultsafe.utils.crypto_utils import derive_vault_key, encrypt, decrypt
+from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info, multiline_input
 
 console = Console()
 
@@ -51,28 +51,28 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
 
     Examples:
         Update the name and username of a credential:
-        $ password-manager update facebook -n -u
+        $ vaultsafe update facebook -n -u
 
         Update mnemonics and URL for a credential whose mnemonic is 'twitter':
-        $ password-manager update twitter -mn -url
+        $ vaultsafe update twitter -mn -url
 
         Update only the name of a credential identified by mnemonic 'linkedin':
-        $ password-manager update linkedin -n
+        $ vaultsafe update linkedin -n
 
         Update primary and secondary emails for a credential:
-        $ password-manager update google -pe -se
+        $ vaultsafe update google -pe -se
 
         Update notes of a credential identified by mnemonic 'amazon':
-        $ password-manager update amazon -nt
+        $ vaultsafe update amazon -nt
 
         Update the password of a credential:
-        $ password-manager update microsoft -pw
+        $ vaultsafe update microsoft -pw
 
         Update the token of a credential:
-        $ password-manager update github -tk
+        $ vaultsafe update github -tk
 
         Update the recovery key of a credential:
-        $ password-manager update dropbox -rk
+        $ vaultsafe update dropbox -rk
     """
     print_basic_info()
     assert_db_init()

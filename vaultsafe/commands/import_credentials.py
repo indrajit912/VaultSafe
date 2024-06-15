@@ -9,11 +9,11 @@ import csv
 from sqlalchemy.exc import IntegrityError
 from rich.console import Console
 
-from password_manager.db.models import session, Credential, Mnemonic
-from password_manager.utils.crypto_utils import encrypt, generate_fernet_key
-from password_manager.utils.auth_utils import input_master_passwd_and_verify
-from password_manager.utils.crypto_utils import derive_vault_key
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info
+from vaultsafe.db.models import session, Credential, Mnemonic
+from vaultsafe.utils.crypto_utils import encrypt, generate_fernet_key
+from vaultsafe.utils.auth_utils import input_master_passwd_and_verify
+from vaultsafe.utils.crypto_utils import derive_vault_key
+from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -190,7 +190,7 @@ def import_credentials(file_path, format):
 
     Example usage:
     \b
-    $ password-manager import /path/to/credentials.csv --format csv
+    $ vaultsafe import /path/to/credentials.csv --format csv
     """
     print_basic_info()
     assert_db_init()

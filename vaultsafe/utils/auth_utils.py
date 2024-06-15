@@ -8,7 +8,7 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.db.models import session, Vault
+from vaultsafe.db.models import session, Vault
 
 console = Console()
 

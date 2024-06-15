@@ -5,12 +5,12 @@
 from pathlib import Path
 from datetime import date
 
-DOT_PASSWD_MANGR_DIR = Path.home() / '.password_manager' 
+DOT_VAULTSAFE_DIR = Path.home() / '.vaultsafe' 
 
-DATABASE_PATH = DOT_PASSWD_MANGR_DIR / 'password_manager.db'
+DATABASE_PATH = DOT_VAULTSAFE_DIR / 'vaultsafe.db'
 DATABASE_URL = f'sqlite:///{DATABASE_PATH}'
 
 # Basic information
-APP_NAME = "Indrajit's Password Manager"
+APP_NAME = "VaultSafe"
 CURRENT_YEAR = date.today().year
 COPYRIGHT_STATEMENT = f"© {CURRENT_YEAR} Indrajit Ghosh. All rights reserved."

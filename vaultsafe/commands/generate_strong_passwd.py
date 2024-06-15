@@ -10,7 +10,7 @@ import pyperclip
 from rich.console import Console
 from rich.table import Table
 
-from password_manager.utils.cli_utils import print_basic_info, assert_db_init
+from vaultsafe.utils.cli_utils import print_basic_info, assert_db_init
 
 console = Console()
 
@@ -45,15 +45,15 @@ def generate(length, count):
     Examples:
         To generate a single password of default length (16 characters):
         \b
-        $ password-manager generate
+        $ vaultsafe generate
 
         To generate a single password of specified length:
         \b
-        $ password-manager generate --length 20
+        $ vaultsafe generate --length 20
 
         To generate multiple passwords of specified length:
         \b
-        $ password-manager generate --length 20 --count 3
+        $ vaultsafe generate --length 20 --count 3
 
     """
     print_basic_info()

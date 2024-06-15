@@ -7,10 +7,10 @@ import webbrowser
 from rich.console import Console
 from rich.prompt import Prompt
 
-from password_manager.db.models import session, Mnemonic
-from password_manager.utils.auth_utils import input_master_passwd_and_verify
-from password_manager.utils.crypto_utils import derive_vault_key, decrypt
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info
+from vaultsafe.db.models import session, Mnemonic
+from vaultsafe.utils.auth_utils import input_master_passwd_and_verify
+from vaultsafe.utils.crypto_utils import derive_vault_key, decrypt
+from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
@@ -27,7 +27,7 @@ def open(mnemonic):
     Examples:
         To retrieve a credential by mnemonic:
         \b
-        $ password-manager open my_mnemonic
+        $ vaultsafe open my_mnemonic
     """
 
     print_basic_info()

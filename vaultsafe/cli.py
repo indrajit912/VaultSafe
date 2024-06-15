@@ -2,7 +2,7 @@
 # Author: Indrajit Ghosh
 # Created On: Jun 12, 2024
 # 
-# Run in dev mode: `python -m password_manager.cli [command] [arguments]`
+# Run in dev mode: `python -m vaultsafe.cli [command] [arguments]`
 # Installation (locally):
 #   `pip install .` 
 # 
@@ -13,9 +13,9 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.commands import change_master_passwd, init, add, get, update, delete, info, \
+from vaultsafe.commands import change_master_passwd, init, add, get, update, delete, info, \
     open, update_vault, export, import_credentials, generate_strong_passwd, copy_credential
-from password_manager.utils.cli_utils import print_basic_info
+from vaultsafe.utils.cli_utils import print_basic_info
 
 console = Console()
 
@@ -23,7 +23,7 @@ console = Console()
 def help():
     """Displays help about the available commands."""
     print_basic_info()
-    console.print(Panel("Help - Password Manager CLI", style="green", title="Command List"))
+    console.print(Panel("Help - VaultSafe CLI", style="green", title="Command List"))
 
     for command_name, command in cli.commands.items():
         if command is not help:  # Skip displaying help for the help command itself

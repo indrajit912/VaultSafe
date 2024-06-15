@@ -6,10 +6,10 @@ import click
 from rich.console import Console
 from rich.panel import Panel
 
-from password_manager.db.models import session, Credential, Mnemonic
-from password_manager.utils.auth_utils import get_password, input_master_passwd_and_verify
-from password_manager.utils.crypto_utils import derive_vault_key, encrypt, generate_fernet_key
-from password_manager.utils.cli_utils import assert_db_init, print_basic_info, multiline_input
+from vaultsafe.db.models import session, Credential, Mnemonic
+from vaultsafe.utils.auth_utils import get_password, input_master_passwd_and_verify
+from vaultsafe.utils.crypto_utils import derive_vault_key, encrypt, generate_fernet_key
+from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info, multiline_input
 
 console = Console()
 
@@ -47,19 +47,19 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
 
     Examples:
         Add a credential with name and mnemonics:
-        $ password-manager add -n "New Credential" -mn mnemonic1 -mn mnemonic2
+        $ vaultsafe add -n "New Credential" -mn mnemonic1 -mn mnemonic2
 
         Add a credential with username and password:
-        $ password-manager add -n "New Credential" -mn mnemonic1 -u -pw
+        $ vaultsafe add -n "New Credential" -mn mnemonic1 -u -pw
 
         Add a credential with primary and secondary emails:
-        $ password-manager add -n "New Credential" -mn mnemonic1 -pe -se
+        $ vaultsafe add -n "New Credential" -mn mnemonic1 -pe -se
 
         Add a credential with URL and notes:
-        $ password-manager add -n "New Credential" -mn mnemonic1 -url -nt
+        $ vaultsafe add -n "New Credential" -mn mnemonic1 -url -nt
 
         Add a credential with recovery key and token:
-        $ password-manager add -n "New Credential" -mn mnemonic1 -rk -tk
+        $ vaultsafe add -n "New Credential" -mn mnemonic1 -rk -tk
     """
     print_basic_info()
     assert_db_init()
