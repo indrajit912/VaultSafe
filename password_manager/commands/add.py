@@ -28,22 +28,38 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
     """
     Add a new credential to the database.
 
-    This command adds a new credential to the password vault database. It allows specifying 
-    various attributes of the credential, including name, mnemonics, username, password, 
-    recovery key, URL, primary email, secondary email, token, and notes.
+    This command adds a new credential with various attributes to the password vault database.
+    It can add the name, mnemonics, username, primary email, secondary email, URL, and notes 
+    associated with the credential. The password, token, and recovery key can also be added 
+    using their respective flags.
+
+    Options:
+        -n, --name TEXT: Name for the credential (required).
+        -mn, --mnemonics TEXT: Mnemonics for the credential (can be specified multiple times) (required).
+        -u, --username: Flag to add the username for the credential.
+        -pw, --password: Flag to add the password.
+        -rk, --recovery-key: Flag to add the recovery key.
+        -url, --url: Flag to add the URL for the credential.
+        -pe, --primary-email: Flag to add the primary email associated with the credential.
+        -se, --secondary-email: Flag to add the secondary email associated with the credential.
+        -tk, --token: Flag to add any token for the credential.
+        -nt, --notes: Flag to add notes stored along with the credential.
 
     Examples:
-        To add a credential with a name and mnemonics:
-        \b
-        $ password-manager add -n "My Credential Name" -mn mnemonic1 -mn mnemonic2
+        Add a credential with name and mnemonics:
+        $ password-manager add -n "New Credential" -mn mnemonic1 -mn mnemonic2
 
-        To add a credential with all details (name, mnemonics, username, password, and URL):
-        \b
-        $ password-manager add -n "My Facebook Account" -mn fb -mn facebook -u -pw -url
+        Add a credential with username and password:
+        $ password-manager add -n "New Credential" -mn mnemonic1 -u -pw
 
-        To add a credential with additional details (recovery key, primary email, secondary email, token, and notes):
-        \b
-        $ password-manager add -n "My Credential" -mn mnemonic1 -mn mnemonic2 -u -pw -rk -url -pe -se -tk -nt
+        Add a credential with primary and secondary emails:
+        $ password-manager add -n "New Credential" -mn mnemonic1 -pe -se
+
+        Add a credential with URL and notes:
+        $ password-manager add -n "New Credential" -mn mnemonic1 -url -nt
+
+        Add a credential with recovery key and token:
+        $ password-manager add -n "New Credential" -mn mnemonic1 -rk -tk
     """
     print_basic_info()
     assert_db_init()

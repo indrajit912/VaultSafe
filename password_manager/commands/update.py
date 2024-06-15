@@ -14,7 +14,7 @@ from password_manager.utils.cli_utils import assert_db_init, print_basic_info, m
 console = Console()
 
 @click.command()
-@click.argument('mnemonic', required=False)
+@click.argument('mnemonic', required=True)
 @click.option('-n', '--name', is_flag=True, help='Flag to update name for the credential')
 @click.option('-mn', '--mnemonics', is_flag=True, help='Flag to update mnemonics for the credential')
 @click.option('-u', '--username', is_flag=True, help='Flag to update username for the credential')
@@ -35,45 +35,44 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
     using their respective flags.
 
     Arguments:
-        mnemonic (str, optional): Mnemonic identifier of the credential to update.
+        mnemonic (str, required): Mnemonic identifier of the credential to update.
 
     Options:
-        --uuid TEXT: UUID associated with the credential to update.
-        -n, --name TEXT: Updated name for the credential.
-        -mn, --mnemonics TEXT: Updated mnemonics for the credential (can be specified multiple times).
-        -u, --username TEXT: Updated username for the credential.
+        -n, --name: Flag to update the name for the credential.
+        -mn, --mnemonics: Flag to update the mnemonics for the credential.
+        -u, --username: Flag to update the username for the credential.
         -pw, --password: Flag to update the password.
         -tk, --token: Flag to update the token.
         -rk, --recovery-key: Flag to update the recovery key.
-        -pe, --primary-email TEXT: Primary email id associated with the credential.
-        -se, --secondary-email TEXT: Secondary email id associated with the credential.
-        -url, --url TEXT: Updated URL for the credential.
-        -nt, --notes TEXT: Write any notes related to the credential (optional).
+        -pe, --primary-email: Flag to update the primary email associated with the credential.
+        -se, --secondary-email: Flag to update the secondary email associated with the credential.
+        -url, --url: Flag to update the URL for the credential.
+        -nt, --notes: Flag to update notes stored along with the credential.
 
     Examples:
         Update the name and username of a credential:
-        $ password-manager update --uuid "123456" -n "New Credential Name" -u "new_username"
+        $ password-manager update facebook -n -u
 
-        Update mnemonics and URL for a credential whose mnemonic is 'facebook':
-        $ password-manager update facebook -mn "new_mnemonic1" -mn "new_mnemonic2" -url "https://newurl.com"
+        Update mnemonics and URL for a credential whose mnemonic is 'twitter':
+        $ password-manager update twitter -mn -url
 
-        Update only the name of a credential identified by mnemonic 'twitter':
-        $ password-manager update twitter -n "Updated Name"
+        Update only the name of a credential identified by mnemonic 'linkedin':
+        $ password-manager update linkedin -n
 
         Update primary and secondary emails for a credential:
-        $ password-manager update --uuid "123456" -pe "primary@example.com" -se "secondary@example.com"
+        $ password-manager update google -pe -se
 
-        Add notes to a credential identified by mnemonic 'linkedin':
-        $ password-manager update linkedin -nt "These are some notes related to the credential."
+        Add notes to a credential identified by mnemonic 'amazon':
+        $ password-manager update amazon -nt
 
         Update the password of a credential:
-        $ password-manager update twitter -pw
+        $ password-manager update microsoft -pw
 
         Update the token of a credential:
-        $ password-manager update facebook -tk
+        $ password-manager update github -tk
 
         Update the recovery key of a credential:
-        $ password-manager update linkedin -rk
+        $ password-manager update dropbox -rk
     """
     print_basic_info()
     assert_db_init()
@@ -94,22 +93,16 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
     vault_key = derive_vault_key(master_key=master_passwd)
     credential_key = credential.get_decrypted_key(vault_key=vault_key)
 
-    # Update credential fields if provided
+    # Display existing values before updating
     if name:
+        console.print(f"Existing name: [bold]{credential.name}[/bold]")
         new_name = click.prompt("Enter the new name for the credential")
         credential.name = new_name
     if username:
+        existing_username = decrypt(credential.username, credential_key) if credential.username else ""
+        console.print(f"Existing username: [bold]{existing_username}[/bold]")
         new_username = click.prompt("Enter the new username for the credential")
         credential.username = encrypt(new_username, credential_key)
-    if url:
-        new_url = click.prompt("Enter the new URL for the credential")
-        credential.url = encrypt(new_url, credential_key)
-    if primary_email:
-        new_pe = click.prompt("Enter the new 'primary email id' for the credential")
-        credential.primary_email = encrypt(new_pe, credential_key)
-    if secondary_email:
-        new_se = click.prompt("Enter the new 'secondary email id' for the credential")
-        credential.secondary_email = encrypt(new_se, credential_key)
 
     # Update password if flag is provided
     if password:
@@ -121,6 +114,22 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
         credential.password = new_password_encrypted
         console.print(Panel("[bold green]Credential's password changed successfully![/bold green]", style="bold green"))
     
+    if url:
+        existing_url = decrypt(credential.url, credential_key) if credential.url else ""
+        console.print(f"Existing URL: [bold]{existing_url}[/bold]")
+        new_url = click.prompt("Enter the new URL for the credential")
+        credential.url = encrypt(new_url, credential_key)
+    if primary_email:
+        existing_primary_email = decrypt(credential.primary_email, credential_key) if credential.primary_email else ""
+        console.print(f"Existing primary email: [bold]{existing_primary_email}[/bold]")
+        new_pe = click.prompt("Enter the new 'primary email id' for the credential")
+        credential.primary_email = encrypt(new_pe, credential_key)
+    if secondary_email:
+        existing_secondary_email = decrypt(credential.secondary_email, credential_key) if credential.secondary_email else ""
+        console.print(f"Existing secondary email: [bold]{existing_secondary_email}[/bold]")
+        new_se = click.prompt("Enter the new 'secondary email id' for the credential")
+        credential.secondary_email = encrypt(new_se, credential_key)
+        
     # Update token if flag is provided
     if token:
         new_token = get_password(
@@ -140,13 +149,10 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
         new_recovery_key_encrypted = encrypt(new_recovery_key, credential_key)
         credential.recovery_key = new_recovery_key_encrypted
         console.print(Panel("[bold green]Credential's recovery key changed successfully![/bold green]", style="bold green"))
-    
-    if notes:
-        existing_notes = decrypt(credential.notes, credential_key) if credential.notes else ""
-        new_notes = multiline_input(f"Existing notes:\n{existing_notes}\n\nWrite any notes related to the credential (end with three empty lines):")
-        credential.notes = encrypt(new_notes, credential_key)
 
     if mnemonics:
+        existing_mnemonics = " ".join([mnemonic.name for mnemonic in credential.mnemonics])
+        console.print(f"Existing mnemonics: [bold]{existing_mnemonics}[/bold]")
         given_mnemonics = click.prompt("Enter the new set of mnemonics separated by white spaces (e.g mn1 mn2 mn3)")
         
         # Split the input into a list of mnemonics
@@ -176,6 +182,12 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
         for mnemonic in set(new_mnemonics):
             mnemonic_entry = Mnemonic(name=mnemonic, credential=credential)
             session.add(mnemonic_entry)
+
+
+    if notes:
+        existing_notes = decrypt(credential.notes, credential_key) if credential.notes else ""
+        new_notes = multiline_input(f"Existing notes:\n{existing_notes}\n\nWrite any notes related to the credential (end with three empty lines):")
+        credential.notes = encrypt(new_notes, credential_key)
 
     session.commit()
 
