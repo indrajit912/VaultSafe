@@ -107,7 +107,7 @@ def add(name, mnemonics, username, password, recovery_key, url, primary_email, s
         console.print(Panel("[bold green]Credential's recovery key added successfully![/bold green]", style="bold green"))
 
     if notes:
-        notes = multiline_input("Write any notes related to the credential (end with three empty lines):")
+        notes = multiline_input("Write any notes related to the credential ([red]end with three empty lines[/red]):")
 
     # Derive the vault key
     vault_key = derive_vault_key(master_key=master_passwd)

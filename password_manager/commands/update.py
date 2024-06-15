@@ -186,7 +186,7 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
 
     if notes:
         existing_notes = decrypt(credential.notes, credential_key) if credential.notes else ""
-        new_notes = multiline_input(f"Existing notes:\n{existing_notes}\n\nWrite any notes related to the credential (end with three empty lines):")
+        new_notes = multiline_input(f"Existing notes:\n{existing_notes}\n\nUpdate the notes below. ([red]end with three empty lines[/red]):")
         credential.notes = encrypt(new_notes, credential_key)
 
     session.commit()
