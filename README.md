@@ -3,7 +3,7 @@
 Welcome to Indrajit's Password Manager, a command-line interface (CLI) tool for securely managing your credentials. This README provides an overview of the commands and usage instructions.
 
 ## Version
-- Version: 0.1.0
+- Version: 1.0.0
 - Copyright: © 2024 Indrajit Ghosh. All rights reserved.
 
 
