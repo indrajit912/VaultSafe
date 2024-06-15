@@ -8,8 +8,8 @@ Welcome to VaultSafe, a robust and user-friendly command-line application design
 - **Get Credentials:** Retrieve your stored credentials effortlessly using your `master_password`.
 - **Update Credentials:** Modify existing credentials securely.
 - **Delete Credentials:** Remove credentials that you no longer need with ease.
-- **Export Data:** Export your encrypted credentials in JSON or CSV format for backup or transfer purposes.
-- **Import Data:** Import exported credentials into the app seamlessly.
+- **Export Credentials:** Export your encrypted credentials in JSON or CSV format for backup or transfer purposes.
+- **Import Credentials:** Import exported credentials into the app seamlessly.
 
 **Security Highlights:**
 
