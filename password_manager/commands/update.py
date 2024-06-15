@@ -62,7 +62,7 @@ def update(mnemonic, name, mnemonics, username, password, token, recovery_key, u
         Update primary and secondary emails for a credential:
         $ password-manager update google -pe -se
 
-        Add notes to a credential identified by mnemonic 'amazon':
+        Update notes of a credential identified by mnemonic 'amazon':
         $ password-manager update amazon -nt
 
         Update the password of a credential:
