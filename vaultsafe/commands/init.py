@@ -2,10 +2,11 @@
 # Author: Indrajit Ghosh
 # Created On: Jun 12, 2024
 # 
-import click
 import shutil
 import socket
 import getpass
+
+import click
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt

@@ -2,11 +2,11 @@
 # Author: Indrajit Ghosh
 # Created On: Jun 12, 2024
 #
-
 import hashlib
 import base64
 import string
 import secrets
+
 from cryptography.fernet import Fernet
 
 def sha256_hash(data: str):

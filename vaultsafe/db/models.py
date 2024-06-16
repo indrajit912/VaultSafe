@@ -4,32 +4,25 @@
 #
 import getpass
 import uuid
-import pyperclip
 import socket
+from datetime import datetime
+
+import pyperclip
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text, Boolean
-from datetime import datetime, timezone
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from vaultsafe.utils.crypto_utils import sha256_hash, decrypt, generate_session_secret_key
+from vaultsafe.utils.general_utils import utcnow, convert_utc_to_local_str
 from vaultsafe.commands.generate_strong_passwd import generate_strong_password
 from vaultsafe.config import DATABASE_URL
 
 Base = declarative_base()
-
-def utcnow():
-    """
-    Get the current UTC datetime.
-
-    Returns:
-        datetime: A datetime object representing the current UTC time.
-    """
-    return datetime.now(timezone.utc)
 
 class Vault(Base):
     __tablename__ = 'vault'
@@ -111,8 +104,8 @@ class Vault(Base):
         table.add_row("Name", self.name)
         table.add_row("Owner", self.owner_name)
         table.add_row("Owner Email", self.owner_email if self.owner_email else '-')
-        table.add_row("Date Created", self.date_created.strftime('%Y-%m-%d %H:%M:%S'))
-        table.add_row("Last Updated", self.last_updated.strftime('%Y-%m-%d %H:%M:%S'))
+        table.add_row("Date Created", convert_utc_to_local_str(self.date_created))
+        table.add_row("Last Updated", convert_utc_to_local_str(self.last_updated))
         table.add_row("Vault Key Hash", self.vault_key_hash)
         table.add_row("Master Password Hash", self.master_password_hash)
         table.add_row("Session Check", str(self.session_check))
@@ -151,6 +144,9 @@ class Credential(Base):
     secondary_email = Column(String, nullable=True)
     token = Column(String, nullable=True, default=None)
     notes = Column(Text, nullable=True)
+
+    date_created = Column(DateTime, default=utcnow)
+    last_updated = Column(DateTime, default=utcnow, onupdate=utcnow)
 
     # Add encrypted_key attr. This key is used to encrypt username and password
     encrypted_key = Column(String, nullable=False)
@@ -224,7 +220,9 @@ class Credential(Base):
             'notes': notes_decrypted,
             'mnemonics': [mn.name for mn in self.mnemonics],
             'encrypted_key': self.encrypted_key.decode(),
-            'encryption_algorithm': self.encryption_algorithm
+            'encryption_algorithm': self.encryption_algorithm,
+            "date_created": self.date_created.isoformat(),
+            "last_updated": self.last_updated.isoformat()
         }
     
     def print_on_screen(self, vault_key, **kwargs):
@@ -260,6 +258,11 @@ class Credential(Base):
         notes = credential_data.get('notes')
         mnemonics:list = credential_data.get('mnemonics')
 
+        dt_created_iso = credential_data.get('date_created')
+        dt_created_str = convert_utc_to_local_str(datetime.fromisoformat(dt_created_iso))
+        last_updated_iso = credential_data.get('last_updated')
+        last_updated_str = convert_utc_to_local_str(datetime.fromisoformat(last_updated_iso))
+
         table = Table(show_header=True, header_style="bold cyan", border_style="bright_blue")
         table.add_column("Field", style="bold", justify="right")
         table.add_column("Value", style="bold magenta", justify="left")
@@ -279,6 +282,8 @@ class Credential(Base):
             mnemonics_str = ", ".join(f"[cyan]{mnemonic}[/cyan]" for mnemonic in mnemonics)
             table.add_row("Mnemonics", mnemonics_str)
 
+        table.add_row("Date Created", f"[red]{dt_created_str}[/red]")
+        table.add_row("Last Updated", f"[red]{last_updated_str}[/red]")
         table.add_row("Notes", f"[magenta]{notes}[/magenta]")
 
         panel = Panel(table, title=count + name, title_align="left", border_style="bold magenta")

@@ -1,10 +1,13 @@
 # /utils/cli_utils.py
+# Author: Indrajit Ghosh
+# Created On: Jun 13, 2024
+# 
 
 import os
 import sys
-import pwinput
 from datetime import date
 
+import pwinput
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel

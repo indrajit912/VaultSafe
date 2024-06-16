@@ -2,9 +2,9 @@
 # Author: Indrajit Ghosh
 # Created On: Jun 12, 2024
 #
-import pwinput
 import sys
 
+import pwinput
 import click
 import itsdangerous
 from itsdangerous import URLSafeTimedSerializer

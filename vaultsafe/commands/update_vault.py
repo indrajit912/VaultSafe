@@ -34,7 +34,7 @@ def update_vault(name, owner, email, session_check, session_expiration):
                                             app will check for a saved master password from the session. 
                                             Consequently, as long as the master password is in session, the 
                                             app will not prompt you for it.
-      -se, '--session-expiration' INTEGER    Update the session expiration time (in sec) for the Vault.
+      -se, --session-expiration INTEGER    Update the session expiration time (in sec) for the Vault.
 
     Examples:
       Update the name and owner of the vault:

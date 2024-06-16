@@ -2,8 +2,9 @@
 # Author: Indrajit Ghosh
 # Created On: Jun 13, 2024
 #
-import click
 import webbrowser
+
+import click
 from rich.console import Console
 from rich.prompt import Prompt
 

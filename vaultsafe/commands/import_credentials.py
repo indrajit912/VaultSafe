@@ -2,10 +2,10 @@
 # Author: Indrajit Ghosh
 # Created On: Jun 14, 2024
 # 
-import click
 import json
 import csv
 
+import click
 from sqlalchemy.exc import IntegrityError
 from rich.console import Console
 

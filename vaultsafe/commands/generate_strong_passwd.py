@@ -3,33 +3,14 @@
 # Created On: Jun 15, 2024
 #
 import click
-import secrets
-import string
-
 import pyperclip
 from rich.console import Console
 from rich.table import Table
 
 from vaultsafe.utils.cli_utils import print_basic_info, assert_db_init
+from vaultsafe.utils.general_utils import generate_strong_password
 
 console = Console()
-
-def generate_strong_password(length=15):
-    """
-    Generate a strong password of specified length.
-    
-    Args:
-        length (int): Length of the password to be generated.
-        
-    Returns:
-        str: The generated strong password.
-    """
-    if length < 4:
-        raise ValueError("Password length must be at least 4 characters.")
-    
-    characters = string.ascii_letters + string.digits + "@#$-%&"
-    password = ''.join(secrets.choice(characters) for _ in range(length))
-    return password
 
 @click.command()
 @click.option('-l', '--length', default=18, help='Length of the generated password.')
