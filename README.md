@@ -321,11 +321,16 @@ Update the vault information in the database.
 - -n, --name TEXT: Update the name of the Vault.
 - -o, --owner TEXT: Update the owner name for the Vault.
 - -e, --email TEXT: Update the owner email for the Vault.
+- -sc, --session-check TEXT [y/n]: Enable or disable session check (y or n). If enabled, the app will check for a saved master password from the session Consequently, as long as the master password is in session, the app will not prompt you for it. 
+- -se, --session-expiration INTEGER    Update the session expiration time (in sec) for the Vault.
 
 **Examples**:
 ```sh
 vaultsafe update-vault -n "New Vault Name" -o "New Owner Name"
 vaultsafe update-vault -e "newemail@example.com"
+
+# Update only the session expiration time to 5 hrs (i.e. 18000 secs):
+vaultsafe update-vault -se 18000
 ```
 
 ### Import/Export

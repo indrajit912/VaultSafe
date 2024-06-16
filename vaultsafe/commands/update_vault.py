@@ -44,7 +44,7 @@ def update_vault(name, owner, email, session_check, session_expiration):
       $ vaultsafe update-vault -e "newemail@example.com"
 
       Update only the session expiration time to 5 hrs (i.e. 18000 secs):
-      $ vaultsafe update-vault -s 18000
+      $ vaultsafe update-vault -se 18000
     """
     print_basic_info()
     assert_db_init()
