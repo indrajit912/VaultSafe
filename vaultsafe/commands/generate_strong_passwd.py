@@ -14,7 +14,7 @@ from vaultsafe.utils.cli_utils import print_basic_info, assert_db_init
 
 console = Console()
 
-def generate_strong_password(length=8):
+def generate_strong_password(length=15):
     """
     Generate a strong password of specified length.
     

@@ -4,3 +4,4 @@ click
 pyperclip
 pwinput
 rich
+itsdangerous

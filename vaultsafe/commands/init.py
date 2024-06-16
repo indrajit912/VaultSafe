@@ -74,6 +74,8 @@ def init_db():
         # Derive `vault_key` from the `master_key`
         vault_key = derive_vault_key(master_key=master_passwd)
 
+        # TODO: Generate session token and save it to the session.
+
         # Set the sha256 hash value of `vault_key`
         vault.set_vault_key_hash(vault_key=vault_key)
 

@@ -5,6 +5,8 @@
 
 import hashlib
 import base64
+import string
+import secrets
 from cryptography.fernet import Fernet
 
 def sha256_hash(data: str):
@@ -85,3 +87,17 @@ def decrypt(encrypted_data: bytes, key):
     fernet = Fernet(key)
     decrypted_data = fernet.decrypt(encrypted_data).decode()
     return decrypted_data
+
+def generate_session_secret_key(length=32):
+    """
+    Generate a strong secret key for sessions.
+    
+    Args:
+        length (int): Length of the secret key to be generated.
+        
+    Returns:
+        str: The generated secret key.
+    """
+    characters = string.ascii_letters + string.digits + "!@#$%^&*()-_=+"
+    secret_key = ''.join(secrets.choice(characters) for _ in range(length))
+    return secret_key

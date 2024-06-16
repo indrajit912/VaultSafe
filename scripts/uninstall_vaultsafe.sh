@@ -25,6 +25,7 @@
 DOT_VAULTSAFE_DIR="$HOME/.vaultsafe"
 VENV_DIR="$DOT_VAULTSAFE_DIR/pwmenv"
 VAULTSAFE_ENV_BIN_DIR="$VENV_DIR/bin"
+DOT_SESSION_FILE="$DOT_VAULTSAFE_DIR/.session"
 
 # Function to print messages
 function print_message() {
@@ -39,7 +40,7 @@ if [[ "$1" == "-f" ]]; then
         rm -rf "$DOT_VAULTSAFE_DIR"
         echo "All source files related to vaultsafe have been deleted successfully."
     else
-        print_message "No password manager directory found at: $DOT_VAULTSAFE_DIR"
+        print_message "No '.vaultsafe' directory found at: $DOT_VAULTSAFE_DIR"
     fi
 else
     # Perform partial cleanup
@@ -49,6 +50,15 @@ else
         echo "Virtual environment directory removed successfully."
     else
         print_message "No virtual environment directory found: $VENV_DIR"
+    fi
+
+    # Remove .session file if it exists
+    if [ -f "$DOT_SESSION_FILE" ]; then
+        print_message "Removing session file: $DOT_SESSION_FILE..."
+        rm -f "$DOT_SESSION_FILE"
+        echo "Session file removed successfully."
+    else
+        print_message "No session file found: $DOT_SESSION_FILE"
     fi
 fi
 

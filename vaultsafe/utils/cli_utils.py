@@ -10,7 +10,7 @@ from rich.table import Table
 from rich.panel import Panel
 
 from vaultsafe.version import __version__
-from vaultsafe.config import APP_NAME, COPYRIGHT_STATEMENT, DATABASE_PATH
+from vaultsafe.config import APP_NAME, COPYRIGHT_STATEMENT, DATABASE_PATH, GITHUB_REPO
 
 console = Console()
 
@@ -60,7 +60,7 @@ def print_basic_info():
     clear_terminal_screen()
 
     # Create title with centered alignment
-    title = Panel(f"{APP_NAME}", title="Password Manager", title_align="center", style="bold white on blue", border_style="bright_blue")
+    title = Panel(f"{APP_NAME} - Password Manager App\nGitHub: {GITHUB_REPO}", title=f"{APP_NAME}", title_align="center", style="bold white on blue", border_style="bright_blue")
 
     # Create information table with centered alignment
     info_table = Table(show_header=False)

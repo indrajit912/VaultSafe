@@ -9,14 +9,15 @@ import socket
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text, Boolean
 from datetime import datetime, timezone
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from vaultsafe.utils.crypto_utils import sha256_hash, decrypt
+from vaultsafe.utils.crypto_utils import sha256_hash, decrypt, generate_session_secret_key
+from vaultsafe.commands.generate_strong_passwd import generate_strong_password
 from vaultsafe.config import DATABASE_URL
 
 Base = declarative_base()
@@ -42,7 +43,11 @@ class Vault(Base):
     owner_name = Column(String, default=lambda: getpass.getuser())  # Optional, defaults to system's current user
     owner_email = Column(String)  # Optional
 
-    password_salt = "this-is-a-very-strong-salt-to-strengthen-master-password"
+    password_salt = Column(String, nullable=False)
+    session_check = Column(Boolean, nullable=False, default=True)
+    session_secret_key = Column(String, nullable=False, default=generate_session_secret_key)
+    session_salt = Column(String, nullable=False, default=generate_strong_password)
+    session_expiration = Column(Integer, nullable=False, default=3 * 3600)
 
     def set_vault_key_hash(self, vault_key):
         """
@@ -60,15 +65,12 @@ class Vault(Base):
         Args:
             master_password (str): The master password to be hashed and stored.
         """
+        self.password_salt = generate_strong_password(25)
         self.master_password_hash = sha256_hash(master_password + self.password_salt)
 
     def check_password(self, raw_password: str):
         """Checks whether the password is correct"""
         if sha256_hash(raw_password + self.password_salt) == self.master_password_hash:
-            # TODO: Derive the vault_key
-
-            # TODO: Save vault_key to the `.session`
-
             return True
         else:
             return False
@@ -86,10 +88,12 @@ class Vault(Base):
             "name": self.name,
             "vault_key_hash": self.vault_key_hash,
             "master_password_hash": self.master_password_hash,
+            "password_salt": self.password_salt,
             "date_created": self.date_created.isoformat(),
             "last_updated": self.last_updated.isoformat(),
             "owner_name": self.owner_name,
-            "owner_email": self.owner_email
+            "owner_email": self.owner_email,
+            "session_expiration": self.session_expiration
         }
     
     def print_on_screen(self):
@@ -111,6 +115,9 @@ class Vault(Base):
         table.add_row("Last Updated", self.last_updated.strftime('%Y-%m-%d %H:%M:%S'))
         table.add_row("Vault Key Hash", self.vault_key_hash)
         table.add_row("Master Password Hash", self.master_password_hash)
+        table.add_row("Session Check", str(self.session_check))
+        if self.session_check:
+            table.add_row("Session Expiration (in sec)", str(self.session_expiration))
 
         console.print(Panel(table, title=self.name, title_align="left", border_style="bright_blue"))
 
