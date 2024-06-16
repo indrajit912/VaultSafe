@@ -6,3 +6,4 @@ pwinput
 rich
 itsdangerous
 pytz
+tzlocal
