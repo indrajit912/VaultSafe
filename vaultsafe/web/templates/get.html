@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Get Credential{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Get Credential</h1>
+
+        <!-- Search Bar Form -->
+        <form method="POST" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" name="mnemonic" placeholder="Enter mnemonic" required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Display Credential if found -->
+        {% if credential %}
+            {% include '_preview_credential.html' %}
+        {% endif %}
+    </div>
+{% endblock %}

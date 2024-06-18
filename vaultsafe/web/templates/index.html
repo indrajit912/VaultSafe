@@ -1,0 +1,32 @@
+<!-- vaultsafe/web/templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Welcome to VaultSafe{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Welcome to VaultSafe</h1>
+        <p>Your secure password manager.</p>
+
+        <h2>About VaultSafe</h2>
+        <p>VaultSafe is primarily a command-line application designed for secure password management. This web server provides a GUI for users preferring a graphical interface.</p>
+
+        <h2>Getting Started</h2>
+        <ol>
+            <li>Initialize VaultSafe using the command-line interface (CLI):
+                <pre>
+$ vaultsafe init
+                </pre>
+                Follow the prompts to set up your master password and initialize the vault.
+            </li>
+            <li>Once initialized, you can securely manage your credentials using VaultSafe's CLI features.</li>
+            <li>For GUI access, enter your master password at the <a href="{{ url_for('main.login') }}">login page</a>.</li>
+        </ol>
+
+        <h2>Contact</h2>
+        <p>For issues, feature requests, or contributions, visit our <a href="https://github.com/indrajit912/VaultSafe.git" target="_blank">GitHub repository</a>.</p>
+
+        <h2>About the Developer</h2>
+        <p>Developed by <a href="https://indrajitghosh.onrender.com" target="_blank">Indrajit Ghosh</a>, SRF, Stat-Math Unit, Indian Statistical Institute, Bangalore.</p>
+    </div>
+{% endblock %}

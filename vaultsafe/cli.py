@@ -9,12 +9,16 @@
 # Installation via GitHub:
 #   `pip install git+https://github.com/indrajit912/PasswordManager.git`
 # 
+# cli.py - Main entry point for the CLI.
 import click
 from rich.console import Console
 from rich.panel import Panel
 
-from vaultsafe.commands import change_master_passwd, init, add, get, update, delete, info, \
-    open, update_vault, export, import_credentials, generate_strong_passwd, copy_credential
+from vaultsafe.commands import (
+    change_master_passwd, init, add, get, update, delete, info,
+    open, update_vault, export, import_credentials, generate_strong_passwd,
+    copy_credential
+)
 from vaultsafe.utils.cli_utils import print_basic_info
 
 console = Console()
@@ -33,6 +37,7 @@ def help():
 def cli():
     pass
 
+# Add commands to the group
 cli.add_command(init.init)
 cli.add_command(help, name='help')
 cli.add_command(info.info)
@@ -47,7 +52,6 @@ cli.add_command(change_master_passwd.change_master_password)
 cli.add_command(update_vault.update_vault)
 cli.add_command(export.export)
 cli.add_command(import_credentials.import_credentials, name='import')
-
 
 if __name__ == '__main__':
     cli()

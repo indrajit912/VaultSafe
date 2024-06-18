@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Dashboard</h1>
+        <a class="btn btn-primary mb-3" href="{{ url_for('main.add_credential') }}">Add New Credential</a>
+
+        {% if credentials %}
+            <div class="card-columns">
+                {% for credential in credentials %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ credential.name }}</h5>
+                            <p class="card-text">
+                                <strong>Mnemonics:</strong> {{ credential['mnemonics']|map(attribute='name')|join(', ') }}<br>
+                                <strong>Date Created:</strong> {{ convert_utc_to_local_str(credential.date_created) }}<br>
+                                <strong>Last Updated:</strong> {{ convert_utc_to_local_str(credential.last_updated) }}<br>
+                            </p>
+                            <div class="btn-group" role="group">
+                                <a class="btn btn-outline-primary" href="{{ url_for('main.get_credential', uuid=credential.uuid) }}">View</a>
+                                <a class="btn btn-outline-warning" href="{{ url_for('main.update_credential', uuid=credential.uuid) }}">Update</a>
+                                
+                                <!-- Delete Button Form -->
+                                <form action="{{ url_for('main.delete_credential', id=credential.id) }}" method="POST" class="d-inline">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this credential?')">Delete</button>
+                                </form>
+                                <!-- End Delete Button Form -->
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                No credentials found. <a href="{{ url_for('main.add_credential') }}" class="alert-link">Add some credentials</a> to get started.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

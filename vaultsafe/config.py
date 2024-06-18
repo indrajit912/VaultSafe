@@ -16,3 +16,8 @@ APP_NAME = "VaultSafe"
 GITHUB_REPO = "https://github.com/indrajit912/VaultSafe.git"
 CURRENT_YEAR = date.today().year
 COPYRIGHT_STATEMENT = f"© {CURRENT_YEAR} Indrajit Ghosh. All rights reserved."
+
+class Config:
+    SECRET_KEY = 'a_hard_to_guess_string'
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

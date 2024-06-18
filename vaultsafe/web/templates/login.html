@@ -1,0 +1,13 @@
+<!-- vaultsafe/web/templates/login.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Login</h1>
+    <form action="{{ url_for('main.login') }}" method="post">
+        <div class="form-group">
+            <label for="master_passwd">Master Password:</label>
+            <input type="password" id="master_passwd" name="master_passwd" required>
+        </div>
+        <button type="submit" class="button">Login</button>
+    </form>
+{% endblock %}

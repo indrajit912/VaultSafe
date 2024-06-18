@@ -7,3 +7,5 @@ rich
 itsdangerous
 pytz
 tzlocal
+Flask
+python-dotenv
