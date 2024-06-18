@@ -4,5 +4,5 @@ function copyToClipboard(elementId) {
   copyText.select();
   document.execCommand('copy');
   copyText.type = 'password';  // Change the input type back to password
-  alert('Copied to clipboard: ' + copyText.value);
+  alert('Copied to clipboard');
 }
