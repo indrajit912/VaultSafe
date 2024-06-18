@@ -1,7 +1,6 @@
 include README.md
 include LICENSE
 include requirements.txt
-include run_flask.py
 recursive-include vaultsafe *.py
 recursive-include vaultsafe/web/templates *.html
 recursive-include vaultsafe/web/static/css *.css

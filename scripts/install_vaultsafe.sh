@@ -77,7 +77,6 @@ python3 -m virtualenv "$VENV_DIR"
 
 # Step 6: Install the package inside the virtual environment
 print_message "Installing vaultsafe from $REPO_URL..."
-"$VENV_DIR/bin/python" -m pip install python-dotenv
 "$VENV_DIR/bin/python" -m pip install git+"$REPO_URL"
 
 # Step 7: Add the venv/bin directory to the PATH

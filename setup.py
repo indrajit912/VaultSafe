@@ -2,8 +2,6 @@
 from setuptools import setup, find_packages
 from pathlib import Path
 
-from vaultsafe.config import GITHUB_REPO
-
 # Define the base directory
 base_dir = Path(__file__).resolve().parent
 
@@ -35,7 +33,7 @@ setup(
     description='A CLI-based password manager',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url=GITHUB_REPO,
+    url="https://github.com/indrajit912/VaultSafe.git",
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
