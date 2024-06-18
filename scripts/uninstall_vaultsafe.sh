@@ -94,3 +94,12 @@ else
 fi
 
 print_message "Uninstallation complete! Please restart your terminal or run 'source ~/.bashrc' or 'source ~/.zshrc' to apply changes."
+
+THIS_SCRIPT="$HOME/Downloads/uninstall_vaultsafe.sh"
+if [ -f "$THIS_SCRIPT" ]; then
+    echo "$THIS_SCRIPT exists. Deleting..."
+    rm "$THIS_SCRIPT"
+    echo "$THIS_SCRIPT has been deleted."
+else
+    echo "$THIS_SCRIPT does not exist."
+fi

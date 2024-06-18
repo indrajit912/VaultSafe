@@ -4,7 +4,6 @@
 #
 import click
 import webbrowser
-import os
 
 from vaultsafe.config import DEFAULT_SERVER_PORT
 from vaultsafe.web import create_app
@@ -34,4 +33,5 @@ def server(port):
 
     webbrowser.open(f"http://localhost:{port}")
 
+    # Start the Flask server
     app.run(port=port)
