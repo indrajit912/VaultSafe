@@ -131,14 +131,14 @@ def update_credential(uuid):
     if request.method == 'POST':
         # Extract form data
         name = request.form.get('name')
-        mnemonics = request.form.getlist('mnemonics')
+        mnemonics = request.form.get('mnemonics').split(', ')
 
         username = request.form.get('username') if 'username' in request.form and request.form.get('username') != Credential.NONE_STR else None
         password = request.form.get('password') if 'password' in request.form and request.form.get('password') != Credential.NONE_STR else None
-        recovery_key = request.form.get('recovery_key') if 'recovery_key' in request.form and request.form.get('recovery_key') != Credential.NONE_STR else None
+        recovery_key = request.form.get('rkey') if 'rkey' in request.form and request.form.get('rkey') != Credential.NONE_STR else None
         url = request.form.get('url') if 'url' in request.form  and request.form.get('url') != Credential.NONE_STR else None
-        primary_email = request.form.get('primary_email') if 'primary_email' in request.form and request.form.get('primary_email') != Credential.NONE_STR else None
-        secondary_email = request.form.get('secondary_email') if 'secondary_email' in request.form else None
+        primary_email = request.form.get('pemail') if 'pemail' in request.form and request.form.get('pemail') != Credential.NONE_STR else None
+        secondary_email = request.form.get('semail') if 'semail' in request.form and request.form.get('semail') != Credential.NONE_STR else None
         token = request.form.get('token') if 'token' in request.form and request.form.get('token') != Credential.NONE_STR else None
         notes = request.form.get('notes') if 'notes' in request.form and request.form.get('notes') != Credential.NONE_STR else None
 
@@ -179,7 +179,7 @@ def update_credential(uuid):
         # Add new mnemonics
         for mnemonic in set(new_mnemonics):
             mnemonic_entry = Mnemonic(name=mnemonic, credential=credential)
-            session.add(mnemonic_entry)
+            db_session.add(mnemonic_entry)
 
         db_session.commit()
 
