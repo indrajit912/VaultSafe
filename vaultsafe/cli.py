@@ -17,7 +17,7 @@ from rich.panel import Panel
 from vaultsafe.commands import (
     change_master_passwd, init, add, get, update, delete, info,
     open, update_vault, export, import_credentials, generate_strong_passwd,
-    copy_credential
+    copy_credential, server
 )
 from vaultsafe.utils.cli_utils import print_basic_info
 
@@ -52,6 +52,7 @@ cli.add_command(change_master_passwd.change_master_password)
 cli.add_command(update_vault.update_vault)
 cli.add_command(export.export)
 cli.add_command(import_credentials.import_credentials, name='import')
+cli.add_command(server.server)
 
 if __name__ == '__main__':
     cli()
