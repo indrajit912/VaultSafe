@@ -1,4 +1,5 @@
 SQLAlchemy
+python-dotenv
 cryptography
 click
 pyperclip
@@ -8,4 +9,3 @@ itsdangerous
 pytz
 tzlocal
 Flask
-python-dotenv

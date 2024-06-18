@@ -6,7 +6,7 @@ from vaultsafe.config import GITHUB_REPO
 # Define the base directory
 base_dir = Path(__file__).resolve().parent
 
-# Read the version from password_manager/version.py
+# Read the version from vaultsafe/version.py
 version = {}
 version_path = base_dir / 'vaultsafe' / 'version.py'
 with open(version_path) as f:
