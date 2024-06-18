@@ -56,12 +56,6 @@ REPO_URL="https://github.com/indrajit912/VaultSafe.git"
 if [ ! -d "$DOT_VAULTSAFE_DIR" ]; then
     print_message "Creating base directory $DOT_VAULTSAFE_DIR..."
     mkdir -p "$DOT_VAULTSAFE_DIR"
-else
-    # Directory already exists, delete it
-    print_message "Deleting existing directory $DOT_VAULTSAFE_DIR..."
-    rm -rf "$DOT_VAULTSAFE_DIR"
-    # Recreate the directory
-    mkdir -p "$DOT_VAULTSAFE_DIR"
 fi
 
 # Step 4: Install virtualenv if not already installed
@@ -70,7 +64,13 @@ if ! command -v virtualenv &> /dev/null; then
     python3 -m pip install --user virtualenv
 fi
 
-# Step 5: Create a virtual environment
+# Step 5a: Check if VENV_DIR exists and delete it if it does
+if [ -d "$VENV_DIR" ]; then
+    print_message "Deleting existing venv directory $VENV_DIR..."
+    rm -rf "$VENV_DIR"
+fi
+
+# Step 5b: Create a virtual environment
 print_message "Creating virtual environment in $VENV_DIR..."
 python3 -m virtualenv "$VENV_DIR"
 
