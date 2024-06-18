@@ -6,7 +6,9 @@ import click
 import webbrowser
 import os
 
-from vaultsafe.config import RUN_FLASK_PY, DEFAULT_SERVER_PORT, VENV_PYTHON
+from vaultsafe.config import DEFAULT_SERVER_PORT
+from vaultsafe.web import create_app
+from vaultsafe.config import Config
 
 @click.command()
 @click.option('--port', default=DEFAULT_SERVER_PORT, help=f'Port for the Flask server (default is {DEFAULT_SERVER_PORT})')
@@ -28,6 +30,8 @@ def server(port):
     $ vaultsafe server --port 9000
     Starts the server on port 9000.
     """
+    app = create_app(Config)
+
     webbrowser.open(f"http://localhost:{port}")
 
-    os.system(f"{VENV_PYTHON} {RUN_FLASK_PY} {port}")
+    app.run(port=port)
