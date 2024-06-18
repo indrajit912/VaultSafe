@@ -56,6 +56,12 @@ REPO_URL="https://github.com/indrajit912/VaultSafe.git"
 if [ ! -d "$DOT_VAULTSAFE_DIR" ]; then
     print_message "Creating base directory $DOT_VAULTSAFE_DIR..."
     mkdir -p "$DOT_VAULTSAFE_DIR"
+else
+    # Directory already exists, delete it
+    print_message "Deleting existing directory $DOT_VAULTSAFE_DIR..."
+    rm -rf "$DOT_VAULTSAFE_DIR"
+    # Recreate the directory
+    mkdir -p "$DOT_VAULTSAFE_DIR"
 fi
 
 # Step 4: Install virtualenv if not already installed
