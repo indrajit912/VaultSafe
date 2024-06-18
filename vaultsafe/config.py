@@ -36,4 +36,4 @@ class Config:
     SECRET_KEY = 'a_hard_to_guess_string'
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    DEBUG = False
+    DEBUG = True if DEV_MODE == 'on' else False

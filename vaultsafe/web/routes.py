@@ -4,8 +4,9 @@ from functools import wraps
 from flask import render_template, redirect, url_for, flash, request, session, Blueprint
 
 from vaultsafe.db.models import Vault, Credential, Mnemonic, session as db_session
-from vaultsafe.utils.crypto_utils import encrypt, decrypt, derive_vault_key, generate_fernet_key
+from vaultsafe.utils.crypto_utils import encrypt, derive_vault_key, generate_fernet_key
 from vaultsafe.utils.general_utils import convert_utc_to_local_str
+from vaultsafe.config import DATABASE_PATH
 
 bp = Blueprint('main', __name__)
 
@@ -27,6 +28,10 @@ def index():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        if not DATABASE_PATH.exists():
+            flash('Database not found. Please initialize the app by running: vaultsafe init', 'error')
+            return render_template('login.html')
+        
         master_passwd = request.form['master_passwd']
         vault = db_session.query(Vault).first()
         if vault.check_password(master_passwd):

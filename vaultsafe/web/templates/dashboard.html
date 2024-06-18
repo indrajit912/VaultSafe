@@ -14,7 +14,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ credential.name }}</h5>
                             <p class="card-text">
-                                <strong>Mnemonics:</strong> {{ credential['mnemonics']|map(attribute='name')|join(', ') }}<br>
+                                <strong>Mnemonics:</strong> <span class="monospace">{{ credential['mnemonics']|map(attribute='name')|join(', ') }}</span><br>
                                 <strong>Date Created:</strong> {{ convert_utc_to_local_str(credential.date_created) }}<br>
                                 <strong>Last Updated:</strong> {{ convert_utc_to_local_str(credential.last_updated) }}<br>
                             </p>
