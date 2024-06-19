@@ -63,6 +63,17 @@ def export_credentials(credentials, vault_key, output_dir, file_format):
             writer.writeheader()
             writer.writerows(credentials_data)
         console.print(f"Exported credentials to [bold]{output_file}[/bold].")
+    
+    elif file_format == 'txt':
+        output_file = Path(output_dir) / 'credentials.txt'
+        with open(output_file, 'w') as f:
+            for idx, cred in enumerate(credentials_data, start=1):
+                f.write(f"Credential {idx}\n")
+                f.write("=" * 20 + "\n")
+                for key, value in cred.items():
+                    f.write(f"{key.capitalize()}: {value if value is not None else 'N/A'}\n")
+                f.write("\n")
+        console.print(f"Exported credentials to [bold]{output_file}[/bold].")
 
     else:
         console.print("[bold red]Error:[/bold red] Invalid file format. Please choose 'json' or 'csv'.")
@@ -70,7 +81,7 @@ def export_credentials(credentials, vault_key, output_dir, file_format):
 
 @click.command()
 @click.option('--output-dir', '-o', default=Path.home() / 'Downloads', type=click.Path(), help='Output directory for the exported file.')
-@click.option('--file-format', '-f', type=click.Choice(['json', 'csv']), default='json', 
+@click.option('--file-format', '-f', type=click.Choice(['json', 'csv', 'txt']), default='json', 
               help='File format for export (json or csv). Default is json.')
 def export(output_dir, file_format):
     """
