@@ -18,7 +18,10 @@ from vaultsafe.utils.cli_utils import assert_db_init, print_basic_info
 
 console = Console()
 
-
+# TODO: Encrypt the credential data before exporting with a password from user
+# TODO: Add an attribute `data_encrypted` = True or False to interpret the fact that
+# The data was encrypted before exporting.
+# TODO: Accordingly modify the import_credential.
 def export_credentials(credentials, vault_key, output_dir, file_format):
     """
     Export credentials to the specified file format.
@@ -54,7 +57,7 @@ def export_credentials(credentials, vault_key, output_dir, file_format):
         output_file = Path(output_dir) / 'credentials.json'
         with open(output_file, 'w') as f:
             json.dump(credentials_data, f, indent=4)
-        console.print(f"Exported credentials to [bold]{output_file}[/bold].")
+        console.print(f"Exported credentials to [bold]{output_file}[/bold]")
 
     elif file_format == 'csv':
         output_file = Path(output_dir) / 'credentials.csv'
@@ -62,7 +65,7 @@ def export_credentials(credentials, vault_key, output_dir, file_format):
             writer = csv.DictWriter(f, fieldnames=credentials_data[0].keys())
             writer.writeheader()
             writer.writerows(credentials_data)
-        console.print(f"Exported credentials to [bold]{output_file}[/bold].")
+        console.print(f"Exported credentials to [bold]{output_file}[/bold]")
     
     elif file_format == 'txt':
         output_file = Path(output_dir) / 'credentials.txt'
@@ -73,12 +76,13 @@ def export_credentials(credentials, vault_key, output_dir, file_format):
                 for key, value in cred.items():
                     f.write(f"{key.capitalize()}: {value if value is not None else 'N/A'}\n")
                 f.write("\n")
-        console.print(f"Exported credentials to [bold]{output_file}[/bold].")
+        console.print(f"Exported credentials to [bold]{output_file}[/bold]")
 
     else:
         console.print("[bold red]Error:[/bold red] Invalid file format. Please choose 'json' or 'csv'.")
 
-
+# TODO: Add an option `-e, --encrypt` with is_flag=True. If this flag is passed
+# then input a password from uer and use that password to encrypt the content. 
 @click.command()
 @click.option('--output-dir', '-o', default=Path.home() / 'Downloads', type=click.Path(), help='Output directory for the exported file.')
 @click.option('--file-format', '-f', type=click.Choice(['json', 'csv', 'txt']), default='json', 
