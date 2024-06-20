@@ -187,43 +187,61 @@ class Credential(Base):
         """
         return decrypt(self.encrypted_key, vault_key)
     
-    def json(self, vault_key):
+    def json(self, vault_key=None):
         """
-        It uses the `vault_key` to decrypt all attributes and then 
-        returns a json equivalent.
-        """
-        # Get the decrypted_key
-        credential_key = self.get_decrypted_key(vault_key=vault_key)
+        Returns a JSON representation of the object, with optional decryption of attributes.
 
-        # Decrypt attributes
-        url_decrypted = decrypt(self.url, credential_key) if self.url else self.NONE_STR
-        username_decrypted = decrypt(self.username, credential_key) if self.username else self.NONE_STR
-        passwd_decrypted = decrypt(self.password, credential_key) if self.password else self.NONE_STR
-        recovery_key_decrypted = decrypt(self.recovery_key, credential_key) if self.recovery_key else self.NONE_STR
-        
-        primary_email_decrypted = decrypt(self.primary_email, credential_key) if self.primary_email else self.NONE_STR
-        secondary_email_decrypted = decrypt(self.secondary_email, credential_key) if self.secondary_email else self.NONE_STR
-        token_decrypted = decrypt(self.token, credential_key) if self.token else self.NONE_STR
-        notes_decrypted = decrypt(self.notes, credential_key) if self.notes else self.NONE_STR
-        
+        If a `vault_key` is provided, it uses the `vault_key` to decrypt all relevant attributes.
+        If no `vault_key` is provided, it returns the attributes as stored in the database.
+
+        Args:
+            vault_key (str, optional): Key used to decrypt the attributes. Defaults to None.
+
+        Returns:
+            dict: A dictionary containing the object's data, with decrypted attributes if a `vault_key` is provided.
+        """
+        def decrypt_attr(attr, key):
+            return decrypt(attr, key) if attr else self.NONE_STR
+
+        decrypted_data = {}
+        if vault_key:
+            # Get the decrypted_key
+            credential_key = self.get_decrypted_key(vault_key=vault_key)
+
+            decrypted_data = {
+                'url': decrypt_attr(self.url, credential_key),
+                'username': decrypt_attr(self.username, credential_key),
+                'password': decrypt_attr(self.password, credential_key),
+                'recovery_key': decrypt_attr(self.recovery_key, credential_key),
+                'primary_email': decrypt_attr(self.primary_email, credential_key),
+                'secondary_email': decrypt_attr(self.secondary_email, credential_key),
+                'token': decrypt_attr(self.token, credential_key),
+                'notes': decrypt_attr(self.notes, credential_key)
+            }
+        else:
+            decrypted_data = {
+                'url': self.url.decode() if self.url else self.NONE_STR,
+                'username': self.username.decode() if self.username else self.NONE_STR,
+                'password': self.password.decode() if self.password else self.NONE_STR,
+                'recovery_key': self.recovery_key.decode() if self.recovery_key else self.NONE_STR,
+                'primary_email': self.primary_email.decode() if self.primary_email else self.NONE_STR,
+                'secondary_email': self.secondary_email.decode() if self.secondary_email else self.NONE_STR,
+                'token': self.token.decode() if self.token else self.NONE_STR,
+                'notes': self.notes.decode() if self.notes else self.NONE_STR
+            }
+
         return {
             'id': self.id,
             'uuid': self.uuid,
             'name': self.name,
-            'url': url_decrypted,
-            'username': username_decrypted,
-            'password': passwd_decrypted,
-            'recovery_key': recovery_key_decrypted,
-            'primary_email': primary_email_decrypted,
-            'secondary_email': secondary_email_decrypted,
-            'token': token_decrypted,
-            'notes': notes_decrypted,
+            **decrypted_data,
             'mnemonics': [mn.name for mn in self.mnemonics],
             'encrypted_key': self.encrypted_key.decode(),
             'encryption_algorithm': self.encryption_algorithm,
             "date_created": self.date_created.isoformat(),
             "last_updated": self.last_updated.isoformat()
         }
+            
     
     def print_on_screen(self, vault_key, **kwargs):
         self._print_on_screen(credential_data=self.json(vault_key), **kwargs)
