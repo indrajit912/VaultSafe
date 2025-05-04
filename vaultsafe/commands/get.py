@@ -19,23 +19,31 @@ console = Console()
 @click.option('--search', '-s', help="Search keyword for fuzzy matching name, username, or notes.")
 def get(mnemonic, search):
     """
-    Retrieve and display a credential from the database.
+    Retrieve and display credentials from the vault.
 
-    If 'mnemonic' is provided, display the credential associated with that mnemonic.
-    If 'mnemonic' is not provided, display all credentials stored in the vault.
+    This command supports two modes:
+    1. If a mnemonic is provided, it retrieves and displays the credential associated with that mnemonic.
+    2. If no mnemonic is provided:
+       - If the --search/-s option is given, it searches across credential name, username, notes, and mnemonics 
+         for approximate matches and displays matching credentials.
+       - If no search keyword is provided, it displays all credentials stored in the vault.
 
     Args:
-        mnemonic (str, optional): The mnemonic associated with the credential to retrieve.
+        mnemonic (str, optional): The mnemonic used to identify a specific credential.
+        --search, -s (str, optional): Keyword for fuzzy search.
 
     Examples:
-        To retrieve a credential by mnemonic:
+        Retrieve a credential by mnemonic:
         \b
         $ vaultsafe get my_mnemonic
 
-        To retrieve all credentials:
+        Retrieve all credentials:
         \b
         $ vaultsafe get
 
+        Search credentials with a keyword:
+        \b
+        $ vaultsafe get -s "gmail"
     """
     print_basic_info()
     assert_db_init()
