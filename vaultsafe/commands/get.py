@@ -4,6 +4,8 @@
 #
 import click
 from rich.console import Console
+from sqlalchemy.orm import joinedload
+from sqlalchemy import or_
 
 from vaultsafe.db.models import session, Credential, Mnemonic
 from vaultsafe.utils.auth_utils import input_master_passwd_and_verify
@@ -14,7 +16,8 @@ console = Console()
 
 @click.command()
 @click.argument('mnemonic', required=False)
-def get(mnemonic):
+@click.option('--search', '-s', help="Search keyword for fuzzy matching name, username, or notes.")
+def get(mnemonic, search):
     """
     Retrieve and display a credential from the database.
 
@@ -44,8 +47,12 @@ def get(mnemonic):
     
     # Derive the vault key
     vault_key = derive_vault_key(master_key=master_passwd)
+
+    if mnemonic and search:
+        raise click.UsageError("Cannot provide both 'mnemonic' and '--search' at the same time.")
     
     if mnemonic:
+        # Query credential associated with the 'mnemonic'
         mnemonic_entry = session.query(Mnemonic).filter_by(name=mnemonic).first()
         if not mnemonic_entry:
             console.print(f"[bold red]Mnemonic not found with the name '{mnemonic}'[/bold red].")
@@ -55,6 +62,34 @@ def get(mnemonic):
         credential = mnemonic_entry.credential
         console.print("\n")
         credential.print_on_screen(vault_key)
+
+    elif search:
+        # Fuzzy search logic
+
+        results = (
+            session.query(Credential)
+            .outerjoin(Credential.mnemonics)
+            .options(joinedload(Credential.mnemonics))
+            .filter(
+                or_(
+                    Credential.name.ilike(f"%{search}%"),
+                    Credential.username.ilike(f"%{search}%"),
+                    Credential.notes.ilike(f"%{search}%"),
+                    Mnemonic.name.ilike(f"%{search}%")  # <-- this line enables searching mnemonics
+                )
+            )
+            .distinct()
+            .all()
+        )
+
+
+        if not results:
+            console.print(f"[bold red]No credentials found matching:[/bold red] '{search}'")
+        else:
+            for idx, cred in enumerate(results, 1):
+                cred.print_on_screen(vault_key, count=idx)
+
+
     else:
         # Query all credentials
         credentials = session.query(Credential).all()

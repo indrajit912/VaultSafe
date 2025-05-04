@@ -20,6 +20,7 @@ from vaultsafe.commands import (
     copy_credential, server
 )
 from vaultsafe.utils.cli_utils import print_basic_info
+from vaultsafe.version import __version__
 
 console = Console()
 
@@ -34,6 +35,7 @@ def help():
             console.print(f"\n[bold yellow]{command_name}[/bold yellow]: {command.help}")
 
 @click.group()
+@click.version_option(__version__, prog_name="vaultsafe", message="%(prog)s v%(version)s")
 def cli():
     pass
 
